@@ -1,64 +1,99 @@
 #include "stdafx.h"
 #include "MainMenu.h"
 
-MainMenu::MenuResult MainMenu::Show(sf::RenderWindow& window)
+MainMenu::MenuOptions MainMenu::Show(sf::RenderWindow& window)
 {
+	selection = Play_Game;
+
 	// Load menu image from file
 	sf::Texture image;
+
 	if (image.loadFromFile("res/img/MainMenu_Temp.png") != true)
 	{
 		throw std::invalid_argument("FAILED TO LOAD: MainMenu");
-		return Exit;
+		return Quit_Game;
 	}
+	
 	sf::Sprite sprite(image);
-
-	//// Set up clickable regions
-	//// Play menu item co-ordinates
-	//MenuItem playButton;
-	//playButton.rect = sf::IntRect(0, 145, 1023, 230);
-	//playButton.action = Play;
-
-	//// Exit menu item coordinates
-	//MenuItem exitButton;
-	//exitButton.rect = sf::IntRect(0, 383, 1023, 180);
-	//exitButton.action = Exit;
-
-	//menuItems.push_back(playButton);
-	//menuItems.push_back(exitButton);
-
 	window.draw(sprite);
+
+	highlight.setSize(sf::Vector2f(700.0f, 135.0f));
+	highlight.setOutlineColor(sf::Color(255, 255, 0));
+	highlight.setFillColor(sf::Color::Transparent);
+	highlight.setOutlineThickness(10.0f);
+	highlight.setPosition(575.0f, 222.0f);
+	window.draw(highlight);
 	window.display();
 
 	return GetMenuResponse(window);
 }
 
-MainMenu::MenuResult MainMenu::HandleClick(int x, int y)
-{
-	std::list<MenuItem>::iterator it;
-
-	for (it = menuItems.begin(); it != menuItems.end(); it++)
-	{
-		sf::IntRect menuItemRect = (*it).rect;
-		if ((*it).rect.contains(x, y))
-		{
-			return (*it).action;
-		}
-	}
-	return Nothing;
-}
-
-MainMenu::MenuResult MainMenu::GetMenuResponse(sf::RenderWindow& window)
+MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 {
 	sf::Event menuEvent;
+	bool keyHeld = false;
+	bool eligibleKeyPressed = false;
 
 	while (true)
 	{
 		while (window.pollEvent(menuEvent))
 		{
-			if (menuEvent.type == sf::Event::MouseButtonPressed)
-				return HandleClick(menuEvent.mouseButton.x, menuEvent.mouseButton.y);
-			if (menuEvent.type == sf::Event::Closed)
-				return Exit;
+			switch (selection)
+			{
+			case (Play_Game):
+			{
+				//highlight.setPosition(575.0f, 222.0f);
+			}
+			case (How_to_Play):
+			{
+				//highlight.setPosition(575.0f, 382.0f);
+			}
+			case (Settings):
+			{
+				//highlight.setPosition(575.0f, 542.0f);
+			}
+			case (Quit_Game):
+			{
+				//highlight.setPosition(575.0f, 702.0f);
+			}
+			}
+
+			if (!keyHeld)
+			{
+				if (menuEvent.type == sf::Event::EventType::KeyPressed
+					&& menuEvent.key.code == sf::Keyboard::Space)
+				{
+					eligibleKeyPressed = true;
+					keyHeld = true;
+					return selection;
+				}
+				else if (menuEvent.type == sf::Event::EventType::KeyPressed
+					&& menuEvent.key.code == sf::Keyboard::Down)
+				{
+					eligibleKeyPressed = true;
+					keyHeld = true;
+					selection = static_cast<MenuOptions>((selection + 1) % (Quit_Game + 1));
+				}
+				else if (menuEvent.type == sf::Event::EventType::KeyPressed
+					&& menuEvent.key.code == sf::Keyboard::Up)
+				{
+					eligibleKeyPressed = true;
+					keyHeld = true;
+					selection = static_cast<MenuOptions>((selection - 1) % (Quit_Game + 1));
+				}
+				else if (menuEvent.type == sf::Event::Closed)
+				{
+					eligibleKeyPressed = true;
+					keyHeld = true;
+					return Quit_Game;
+				}
+			}
+			else if (menuEvent.type == sf::Event::EventType::KeyReleased 
+					 && eligibleKeyPressed)
+			{
+				eligibleKeyPressed = false;
+				keyHeld = false;
+			}
 		}
 	}
 }

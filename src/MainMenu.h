@@ -1,22 +1,31 @@
 #pragma once
-#include <list>
 
 class MainMenu
 {
 public:
-	enum MenuResult { Nothing, Exit, Play };
-
-	struct MenuItem
+	enum MenuOptions 
 	{
-	public:
-		sf::IntRect rect;
-		MenuResult action;
+		Play_Game,
+		How_to_Play,
+		Settings,
+		Quit_Game
 	};
 
-	MenuResult Show(sf::RenderWindow& window);
+	sf::RectangleShape highlight; 
+
+	// Set up highlight regions
+	// "Play Game" co-ordinates
+
+	// "How to Play" co-ordinates
+
+	// "Settings" co-ordinates
+
+	// "Quit Game" co-ordinates
+
+
+	MenuOptions Show(sf::RenderWindow& window);
 
 private:
-	MenuResult GetMenuResponse(sf::RenderWindow& window);
-	MenuResult HandleClick(int x, int y);
-	std::list<MenuItem> menuItems;
+	MenuOptions selection;
+	MenuOptions GetMenuResponse(sf::RenderWindow& window);
 };

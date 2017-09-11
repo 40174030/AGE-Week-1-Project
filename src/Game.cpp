@@ -33,21 +33,21 @@ void Game::ShowTitleScreen()
 void Game::ShowMainMenu()
 {
 	MainMenu mainMenu;
-	MainMenu::MenuResult result = mainMenu.Show(mainWindow);
+	MainMenu::MenuOptions result = mainMenu.Show(mainWindow);
 	game_objectManager.GetClock().restart();
 
 	switch (result)
 	{
-	case MainMenu::Exit:
+	case MainMenu::Quit_Game:
 	{
 		gameState = Game::Exiting;
 		break;
 	}
-	case MainMenu::Play:
-	{
-		gameState = Game::Playing;
-		break;
-	}
+	//case MainMenu::Play_Game:
+	//{
+	//	gameState = Game::Playing;
+	//	break;
+	//}
 	}
 }
 
