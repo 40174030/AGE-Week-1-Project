@@ -6,8 +6,8 @@ class Game
 public:
 	static void Start();
 
-	const static int screen_Width = 1600;
-	const static int screen_Height = 900;
+	const static int screen_Width = 1920;
+	const static int screen_Height = 1080;
 
 private:
 	enum GameState

@@ -8,7 +8,8 @@ void Game::Start()
 	if (gameState != Uninitialized)
 		return;
 
-	mainWindow.create(sf::VideoMode(screen_Width, screen_Height, 32), "As Yet Unnamed");
+	mainWindow.create(sf::VideoMode(screen_Width, screen_Height, 32), 
+					  "As Yet Unnamed", sf::Style::Fullscreen);
 	gameState = Game::ShowingTitle;
 
 	while (!IsExiting())
