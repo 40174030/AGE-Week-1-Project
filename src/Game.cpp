@@ -22,8 +22,11 @@ void Game::Start()
 void Game::ShowTitleScreen()
 {
 	TitleScreen titleScreen;
-	titleScreen.Show(mainWindow);
-	gameState = Game::ShowingMenu;
+	bool quit = titleScreen.Show(mainWindow);
+	if (quit)
+		gameState = Game::Exiting;
+	else
+		gameState = Game::ShowingMenu;
 }
 
 void Game::ShowMainMenu()

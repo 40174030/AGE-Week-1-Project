@@ -1,13 +1,14 @@
 #include "stdafx.h"
+#include "Game.h"
 #include "TitleScreen.h"
 
-void TitleScreen::Show(sf::RenderWindow& window)
+bool TitleScreen::Show(sf::RenderWindow& window)
 {
 	sf::Texture image;
 	if (image.loadFromFile("res/img/TitleScreen_Temp.png") != true)
 	{
 		throw std::invalid_argument("FAILED TO LOAD: TitleScreen");
-		return;
+		return true;
 	}
 
 	sf::Sprite sprite(image);
@@ -21,11 +22,13 @@ void TitleScreen::Show(sf::RenderWindow& window)
 	{
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::EventType::KeyPressed 
+			if (event.type == sf::Event::EventType::KeyPressed
 				&& event.key.code == sf::Keyboard::Space)
 			{
-				return;
+				return false;
 			}
+			else if (event.type == sf::Event::Closed)
+				return true;
 		}
 	}
 

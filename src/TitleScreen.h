@@ -2,5 +2,5 @@
 class TitleScreen
 {
 public:
-	void Show(sf::RenderWindow& window);
+	bool Show(sf::RenderWindow& window);
 };
