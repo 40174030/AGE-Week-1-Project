@@ -27,7 +27,7 @@ void Game::ShowTitleScreen()
 	if (quit)
 		gameState = Game::Exiting;
 	else
-		gameState = Game::ShowingMenu;
+		gameState = Game::ShowingMain;
 }
 
 void Game::ShowMainMenu()
@@ -38,16 +38,26 @@ void Game::ShowMainMenu()
 
 	switch (result)
 	{
+	case MainMenu::Play_Game:
+	{
+		gameState = Game::Playing;
+		break;
+	}
+	case MainMenu::How_to_Play:
+	{
+		gameState = Game::ShowingHowTo;
+		break;
+	}
+	case MainMenu::Settings:
+	{
+		gameState = Game::ShowingSettings;
+		break;
+	}
 	case MainMenu::Quit_Game:
 	{
 		gameState = Game::Exiting;
 		break;
 	}
-	//case MainMenu::Play_Game:
-	//{
-	//	gameState = Game::Playing;
-	//	break;
-	//}
 	}
 }
 
@@ -71,7 +81,7 @@ void Game::GameLoop()
 		ShowTitleScreen();
 		break;
 	}
-	case Game::ShowingMenu:
+	case Game::ShowingMain:
 	{
 		ShowMainMenu();
 		game_objectManager.ResetAll();
@@ -79,7 +89,7 @@ void Game::GameLoop()
 	}
 	case Game::Playing:
 	{
-		mainWindow.clear(sf::Color(255, 0, 0));
+		mainWindow.clear(sf::Color(255, 255, 0));
 		game_objectManager.UpdateAll();
 		game_objectManager.DrawAll(mainWindow);
 		mainWindow.display();
@@ -89,8 +99,18 @@ void Game::GameLoop()
 		if (currentEvent.type == sf::Event::KeyPressed)
 		{
 			if (currentEvent.key.code == sf::Keyboard::Escape)
-				gameState = Game::ShowingMenu;
+				gameState = Game::ShowingMain;
 		}
+		break;
+	}
+	case Game::ShowingHowTo:
+	{
+
+		break;
+	}
+	case Game::ShowingSettings:
+	{
+
 		break;
 	}
 	}

@@ -42,19 +42,19 @@ MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 			{
 			case (Play_Game):
 			{
-				//highlight.setPosition(575.0f, 222.0f);
+				highlight.setPosition(highlightPlayGame);
 			}
 			case (How_to_Play):
 			{
-				//highlight.setPosition(575.0f, 382.0f);
+				highlight.setPosition(highlightHowToPlay);
 			}
 			case (Settings):
 			{
-				//highlight.setPosition(575.0f, 542.0f);
+				highlight.setPosition(highlightSettings);
 			}
 			case (Quit_Game):
 			{
-				//highlight.setPosition(575.0f, 702.0f);
+				highlight.setPosition(highlightQuitGame);
 			}
 			}
 

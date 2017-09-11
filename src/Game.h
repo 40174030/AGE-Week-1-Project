@@ -14,7 +14,9 @@ private:
 	{
 		Uninitialized,
 		ShowingTitle,
-		ShowingMenu,
+		ShowingMain,
+		ShowingHowTo,
+		ShowingSettings,
 		Playing,
 		Paused,
 		Exiting
