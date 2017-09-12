@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Game.h"
 #include "TitleScreen.h"
 
 bool TitleScreen::Show(sf::RenderWindow& window)

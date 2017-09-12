@@ -14,6 +14,7 @@ public:
 	MenuOptions Show(sf::RenderWindow& window);
 
 private:
+	sf::Sprite sprite;
 	sf::RectangleShape highlight;
 
 	// Set up highlight regions

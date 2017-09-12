@@ -30,5 +30,7 @@ private:
 	static bool IsExiting();
 	static void ShowTitleScreen();
 	static void ShowMainMenu();
+	static void ShowHowToPlay();
+	static void ShowSettingsMenu();
 	static void ShowPauseMenu();
 };

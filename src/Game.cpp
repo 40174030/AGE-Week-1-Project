@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "TitleScreen.h"
 #include "MainMenu.h"
+#include "HowToPlayMenu.h"
+#include "SettingsMenu.h"
 
 void Game::Start()
 {
@@ -61,6 +63,26 @@ void Game::ShowMainMenu()
 	}
 }
 
+void Game::ShowHowToPlay()
+{
+	HowToPlayMenu htpMenu;
+	bool quit = htpMenu.Show(mainWindow);
+	if (quit)
+		gameState = Game::Exiting;
+	else
+		gameState = Game::ShowingMain;
+}
+
+void Game::ShowSettingsMenu()
+{
+	SettingsMenu settings;
+	bool quit = settings.Show(mainWindow);
+	if (quit)
+		gameState = Game::Exiting;
+	else
+		gameState = Game::ShowingMain;
+}
+
 bool Game::IsExiting()
 {
 	if (gameState == Game::Exiting)
@@ -105,12 +127,12 @@ void Game::GameLoop()
 	}
 	case Game::ShowingHowTo:
 	{
-
+		ShowHowToPlay();
 		break;
 	}
 	case Game::ShowingSettings:
 	{
-
+		ShowSettingsMenu();
 		break;
 	}
 	}

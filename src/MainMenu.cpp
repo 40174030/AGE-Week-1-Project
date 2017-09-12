@@ -14,7 +14,7 @@ MainMenu::MenuOptions MainMenu::Show(sf::RenderWindow& window)
 		return Quit_Game;
 	}
 	
-	sf::Sprite sprite(image);
+	sprite.setTexture(image);
 	window.draw(sprite);
 
 	highlight.setSize(sf::Vector2f(700.0f, 135.0f));
@@ -36,6 +36,7 @@ MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 
 	while (true)
 	{
+
 		while (window.pollEvent(menuEvent))
 		{
 			switch (selection)
@@ -58,6 +59,10 @@ MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 			}
 			}
 
+			if (menuEvent.type == sf::Event::EventType::KeyPressed
+				&& menuEvent.key.code == sf::Keyboard::Escape)
+				return Quit_Game;
+
 			if (!keyHeld)
 			{
 				if (menuEvent.type == sf::Event::EventType::KeyPressed
@@ -79,7 +84,9 @@ MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 				{
 					eligibleKeyPressed = true;
 					keyHeld = true;
-					selection = static_cast<MenuOptions>((selection - 1) % (Quit_Game + 1));
+					selection = static_cast<MenuOptions>(selection - 1);
+					if (selection == -1)
+						selection = Quit_Game;
 				}
 				else if (menuEvent.type == sf::Event::Closed)
 				{
