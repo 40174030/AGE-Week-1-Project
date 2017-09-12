@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TitleScreen.h"
+#include "Game.h"
 
 bool TitleScreen::Show(sf::RenderWindow& window)
 {
@@ -11,6 +12,13 @@ bool TitleScreen::Show(sf::RenderWindow& window)
 	}
 
 	sf::Sprite sprite(image);
+
+	if (!(Game::fullscreenCheck))
+	{
+		sf::Vector2f scale = sprite.getScale();
+		float downscale = 2.0f / 3.0f;
+		sprite.scale(scale.x * downscale, scale.y * downscale);
+	}
 
 	window.draw(sprite);
 	window.display();

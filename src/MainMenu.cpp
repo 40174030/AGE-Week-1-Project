@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MainMenu.h"
+#include "Game.h"
 
 MainMenu::MenuOptions MainMenu::Show(sf::RenderWindow& window)
 {
@@ -15,6 +16,14 @@ MainMenu::MenuOptions MainMenu::Show(sf::RenderWindow& window)
 	}
 	
 	sprite.setTexture(image);
+
+	if (!(Game::fullscreenCheck))
+	{
+		sf::Vector2f scale = sprite.getScale();
+		float downscale = 2.0f / 3.0f;
+		sprite.scale(scale.x * downscale, scale.y * downscale);
+	}
+
 	window.draw(sprite);
 
 	highlight.setSize(sf::Vector2f(700.0f, 135.0f));
@@ -22,8 +31,6 @@ MainMenu::MenuOptions MainMenu::Show(sf::RenderWindow& window)
 	highlight.setFillColor(sf::Color::Transparent);
 	highlight.setOutlineThickness(10.0f);
 	highlight.setPosition(575.0f, 222.0f);
-	window.draw(highlight);
-	window.display();
 
 	return GetMenuResponse(window);
 }
@@ -36,29 +43,13 @@ MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 
 	while (true)
 	{
+		window.clear();
+		window.draw(sprite);
+		window.draw(highlight);
+		window.display();
 
 		while (window.pollEvent(menuEvent))
 		{
-			switch (selection)
-			{
-			case (Play_Game):
-			{
-				highlight.setPosition(highlightPlayGame);
-			}
-			case (How_to_Play):
-			{
-				highlight.setPosition(highlightHowToPlay);
-			}
-			case (Settings):
-			{
-				highlight.setPosition(highlightSettings);
-			}
-			case (Quit_Game):
-			{
-				highlight.setPosition(highlightQuitGame);
-			}
-			}
-
 			if (menuEvent.type == sf::Event::EventType::KeyPressed
 				&& menuEvent.key.code == sf::Keyboard::Escape)
 				return Quit_Game;
@@ -78,6 +69,7 @@ MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 					eligibleKeyPressed = true;
 					keyHeld = true;
 					selection = static_cast<MenuOptions>((selection + 1) % (Quit_Game + 1));
+					moveHighlight(window, selection);
 				}
 				else if (menuEvent.type == sf::Event::EventType::KeyPressed
 					&& menuEvent.key.code == sf::Keyboard::Up)
@@ -87,6 +79,7 @@ MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 					selection = static_cast<MenuOptions>(selection - 1);
 					if (selection == -1)
 						selection = Quit_Game;
+					moveHighlight(window, selection);
 				}
 				else if (menuEvent.type == sf::Event::Closed)
 				{
@@ -102,5 +95,32 @@ MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 				keyHeld = false;
 			}
 		}
+	}
+}
+
+void MainMenu::moveHighlight(sf::RenderWindow& window, MainMenu::MenuOptions newSelection)
+{
+	switch (newSelection)
+	{
+	case Play_Game:
+	{
+		highlight.setPosition(highlightPlayGame);
+		break;
+	}
+	case How_to_Play:
+	{
+		highlight.setPosition(highlightHowToPlay);
+		break;
+	}
+	case Settings:
+	{
+		highlight.setPosition(highlightSettings);
+		break;
+	}
+	case Quit_Game:
+	{
+		highlight.setPosition(highlightQuitGame);
+		break;
+	}
 	}
 }

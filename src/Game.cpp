@@ -10,9 +10,13 @@ void Game::Start()
 	if (gameState != Uninitialized)
 		return;
 
-	mainWindow.create(sf::VideoMode(screen_Width, screen_Height, 32), 
-					  "As Yet Unnamed", sf::Style::Fullscreen);
 	gameState = Game::ShowingTitle;
+
+	ChangeResolution();
+
+	PlayerShip* player = new PlayerShip();
+
+	game_objectManager.Add("Player", player);
 
 	while (!IsExiting())
 	{
@@ -20,6 +24,47 @@ void Game::Start()
 	}
 
 	mainWindow.close();
+}
+
+bool Game::fullscreenCheck()
+{
+	return fullscreen;
+}
+
+void Game::ChangeResolution()
+{
+	if (mainWindow.isOpen())
+		mainWindow.close();
+	if (fullscreenCheck())
+	{
+		mainWindow.create(sf::VideoMode(
+			((int)(screen_Width * (2.0f / 3.0f))), 
+			((int)(screen_Height * (2.0f / 3.0f))), 
+			32), "As Yet Unnamed");
+		//fullscreen = false;
+	}
+	else
+	{
+		mainWindow.create(sf::VideoMode(
+			screen_Width, 
+			screen_Height, 
+			32), "As Yet Unnamed", 
+			sf::Style::Fullscreen);
+		//fullscreen = true;
+	}
+	switch (gameState)
+	{
+	case Game::ShowingTitle:
+	{
+		break;
+	}
+	default:
+	{
+		ShowSettingsMenu();
+		break;
+	}
+
+	}
 }
 
 void Game::ShowTitleScreen()
@@ -111,7 +156,7 @@ void Game::GameLoop()
 	}
 	case Game::Playing:
 	{
-		mainWindow.clear(sf::Color(255, 255, 0));
+		mainWindow.clear();
 		game_objectManager.UpdateAll();
 		game_objectManager.DrawAll(mainWindow);
 		mainWindow.display();
@@ -138,6 +183,7 @@ void Game::GameLoop()
 	}
 }
 
+bool Game::fullscreen = false;
 Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;
 Game_ObjectManager Game::game_objectManager;
