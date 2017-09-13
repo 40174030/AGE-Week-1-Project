@@ -1,11 +1,11 @@
 #pragma once
 #include "Game_Object.h"
 
-class PlayerShip : public Game_Object
+class PlayerAvatar : public Game_Object
 {
 public:
-	PlayerShip();
-	~PlayerShip();
+	PlayerAvatar();
+	~PlayerAvatar();
 
 	void Update(float elapsedTime);
 	void Draw(sf::RenderWindow& window);

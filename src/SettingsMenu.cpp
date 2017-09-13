@@ -13,7 +13,7 @@ bool SettingsMenu::Show(sf::RenderWindow& window)
 
 	sf::Sprite sprite(image);
 
-	if (!(Game::fullscreenCheck))
+	if (!(Game::FullscreenCheck()))
 	{
 		sf::Vector2f scale = sprite.getScale();
 		float downscale = 2.0f / 3.0f;

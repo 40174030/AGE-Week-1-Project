@@ -1,13 +1,13 @@
 #pragma once
 #include "Game_ObjectManager.h"
-#include "PlayerShip.h"
+#include "PlayerAvatar.h"
 
 class Game
 {
 public:
 	static void Start();
 
-	static bool fullscreenCheck();
+	static bool FullscreenCheck();
 
 	const static int screen_Width = 1920;
 	const static int screen_Height = 1080;
@@ -31,8 +31,11 @@ private:
 	static Game_ObjectManager game_objectManager;
 
 	static void ChangeResolution();
+	static void SetUpPlayArea();
+
 	static void GameLoop();
 	static bool IsExiting();
+
 	static void ShowTitleScreen();
 	static void ShowMainMenu();
 	static void ShowHowToPlay();

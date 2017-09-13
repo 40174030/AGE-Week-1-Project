@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "PlayerShip.h"
+#include "PlayerAvatar.h"
 #include "Game.h"
 
-PlayerShip::PlayerShip()
+PlayerAvatar::PlayerAvatar()
 {
 	Load("res/img/spaceship1.png");
 	assert(IsLoaded());
@@ -11,19 +11,19 @@ PlayerShip::PlayerShip()
 	SetPosition((Game::screen_Width / 2), (Game::screen_Height / 2));
 }
 
-PlayerShip::~PlayerShip() {}
+PlayerAvatar::~PlayerAvatar() {}
 
-void PlayerShip::Draw(sf::RenderWindow& window)
+void PlayerAvatar::Draw(sf::RenderWindow& window)
 {
 	Game_Object::Draw(window);
 }
 
-void PlayerShip::Reset()
+void PlayerAvatar::Reset()
 {
 
 }
 
-void PlayerShip::Update(float elapsedTime)
+void PlayerAvatar::Update(float elapsedTime)
 {
 
 }

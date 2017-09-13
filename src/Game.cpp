@@ -4,6 +4,7 @@
 #include "MainMenu.h"
 #include "HowToPlayMenu.h"
 #include "SettingsMenu.h"
+#include "PauseMenu.h"
 
 void Game::Start()
 {
@@ -14,7 +15,7 @@ void Game::Start()
 
 	ChangeResolution();
 
-	PlayerShip* player = new PlayerShip();
+	PlayerAvatar* player = new PlayerAvatar();
 
 	game_objectManager.Add("Player", player);
 
@@ -26,7 +27,7 @@ void Game::Start()
 	mainWindow.close();
 }
 
-bool Game::fullscreenCheck()
+bool Game::FullscreenCheck()
 {
 	return fullscreen;
 }
@@ -35,13 +36,13 @@ void Game::ChangeResolution()
 {
 	if (mainWindow.isOpen())
 		mainWindow.close();
-	if (fullscreenCheck())
+	if (FullscreenCheck())
 	{
 		mainWindow.create(sf::VideoMode(
 			((int)(screen_Width * (2.0f / 3.0f))), 
 			((int)(screen_Height * (2.0f / 3.0f))), 
 			32), "As Yet Unnamed");
-		//fullscreen = false;
+		fullscreen = false;
 	}
 	else
 	{
@@ -50,7 +51,7 @@ void Game::ChangeResolution()
 			screen_Height, 
 			32), "As Yet Unnamed", 
 			sf::Style::Fullscreen);
-		//fullscreen = true;
+		fullscreen = true;
 	}
 	switch (gameState)
 	{
@@ -128,6 +129,31 @@ void Game::ShowSettingsMenu()
 		gameState = Game::ShowingMain;
 }
 
+void Game::ShowPauseMenu()
+{
+	PauseMenu pauseMenu;
+	PauseMenu::MenuOptions result = pauseMenu.Show(mainWindow);
+
+	switch (result)
+	{
+	case PauseMenu::Resume_Game:
+	{
+		gameState = Game::Playing;
+		break;
+	}
+	case PauseMenu::Back_to_Main:
+	{
+		gameState = Game::ShowingMain;
+		break;
+	}
+	case PauseMenu::Close_Window:
+	{
+		gameState = Game::Exiting;
+		break;
+	}
+	}
+}
+
 bool Game::IsExiting()
 {
 	if (gameState == Game::Exiting)
@@ -166,7 +192,7 @@ void Game::GameLoop()
 		if (currentEvent.type == sf::Event::KeyPressed)
 		{
 			if (currentEvent.key.code == sf::Keyboard::Escape)
-				gameState = Game::ShowingMain;
+				gameState = Game::Paused;
 		}
 		break;
 	}
@@ -180,10 +206,15 @@ void Game::GameLoop()
 		ShowSettingsMenu();
 		break;
 	}
+	case Game::Paused:
+	{
+		ShowPauseMenu();
+		break;
+	}
 	}
 }
 
-bool Game::fullscreen = false;
+bool Game::fullscreen = true;
 Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;
 Game_ObjectManager Game::game_objectManager;
