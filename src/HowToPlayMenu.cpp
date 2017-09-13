@@ -16,8 +16,7 @@ bool HowToPlayMenu::Show(sf::RenderWindow& window)
 	if (!(Game::FullscreenCheck()))
 	{
 		sf::Vector2f scale = sprite.getScale();
-		float downscale = 2.0f / 3.0f;
-		sprite.scale(scale.x * downscale, scale.y * downscale);
+		sprite.scale(scale.x * Game::downscale, scale.y * Game::downscale);
 	}
 
 	window.draw(sprite);

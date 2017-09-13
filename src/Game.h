@@ -12,6 +12,8 @@ public:
 	const static int screen_Width = 1920;
 	const static int screen_Height = 1080;
 
+	const static float downscale;
+
 private:
 	enum GameState
 	{

@@ -17,20 +17,24 @@ MainMenu::MenuOptions MainMenu::Show(sf::RenderWindow& window)
 	
 	sprite.setTexture(image);
 
-	if (!(Game::FullscreenCheck()))
-	{
-		sf::Vector2f scale = sprite.getScale();
-		float downscale = 2.0f / 3.0f;
-		sprite.scale(scale.x * downscale, scale.y * downscale);
-	}
-
-	window.draw(sprite);
-
 	highlight.setSize(sf::Vector2f(700.0f, 135.0f));
 	highlight.setOutlineColor(sf::Color(255, 255, 0));
 	highlight.setFillColor(sf::Color::Transparent);
 	highlight.setOutlineThickness(10.0f);
-	highlight.setPosition(575.0f, 222.0f);
+	highlight.setPosition(highlightPlayGame);
+
+	if (!(Game::FullscreenCheck()))
+	{
+		sf::Vector2f scale = sprite.getScale();
+		sf::Vector2f originalSize = highlight.getSize();
+		
+		sprite.scale(scale * Game::downscale);
+		highlight.setSize(sf::Vector2f(originalSize * Game::downscale));
+		highlight.setPosition(sf::Vector2f(highlightPlayGame * Game::downscale));
+		highlight.setOutlineThickness(6.7f);
+	}
+
+	window.draw(sprite);
 
 	return GetMenuResponse(window);
 }
@@ -104,22 +108,34 @@ void MainMenu::moveHighlight(sf::RenderWindow& window, MainMenu::MenuOptions new
 	{
 	case Play_Game:
 	{
-		highlight.setPosition(highlightPlayGame);
+		if (Game::FullscreenCheck())
+			highlight.setPosition(highlightPlayGame);
+		else
+			highlight.setPosition(sf::Vector2f(highlightPlayGame * Game::downscale));
 		break;
 	}
 	case How_to_Play:
 	{
-		highlight.setPosition(highlightHowToPlay);
+		if (Game::FullscreenCheck())
+			highlight.setPosition(highlightHowToPlay);
+		else
+			highlight.setPosition(sf::Vector2f(highlightHowToPlay * Game::downscale));
 		break;
 	}
 	case Settings:
 	{
-		highlight.setPosition(highlightSettings);
+		if (Game::FullscreenCheck())
+			highlight.setPosition(highlightSettings);
+		else
+			highlight.setPosition(sf::Vector2f(highlightSettings * Game::downscale));
 		break;
 	}
 	case Quit_Game:
 	{
-		highlight.setPosition(highlightQuitGame);
+		if (Game::FullscreenCheck())
+			highlight.setPosition(highlightQuitGame);
+		else
+			highlight.setPosition(sf::Vector2f(highlightQuitGame * Game::downscale));
 		break;
 	}
 	}

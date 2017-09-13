@@ -162,6 +162,18 @@ bool Game::IsExiting()
 		return false;
 }
 
+void SetUpPlayArea()
+{
+	if (Game::FullscreenCheck())
+	{
+
+	}
+	else
+	{
+
+	}
+}
+
 void Game::GameLoop()
 {
 	sf::Event currentEvent;
@@ -183,8 +195,11 @@ void Game::GameLoop()
 	case Game::Playing:
 	{
 		mainWindow.clear();
+
+		//SetUpPlayArea();
 		game_objectManager.UpdateAll();
 		game_objectManager.DrawAll(mainWindow);
+
 		mainWindow.display();
 
 		if (currentEvent.type == sf::Event::Closed)
@@ -214,7 +229,8 @@ void Game::GameLoop()
 	}
 }
 
-bool Game::fullscreen = true;
+bool Game::fullscreen = false;
+const float Game::downscale = 2.0f / 3.0f;
 Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;
 Game_ObjectManager Game::game_objectManager;
