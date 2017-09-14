@@ -65,8 +65,3 @@ float Game_Object::GetWidth() const
 {
 	return sprite.getLocalBounds().width;
 }
-
-sf::FloatRect Game_Object::GetBoundingRect() const
-{
-	return sprite.getGlobalBounds();
-}

@@ -162,17 +162,6 @@ bool Game::IsExiting()
 		return false;
 }
 
-void SetUpPlayArea()
-{
-	if (Game::FullscreenCheck())
-	{
-
-	}
-	else
-	{
-
-	}
-}
 
 void Game::GameLoop()
 {
@@ -196,7 +185,9 @@ void Game::GameLoop()
 	{
 		mainWindow.clear();
 
-		//SetUpPlayArea();
+		PlayArea playArea;
+		playArea.Setup();
+		playArea.Draw(mainWindow, 1);
 		game_objectManager.UpdateAll();
 		game_objectManager.DrawAll(mainWindow);
 

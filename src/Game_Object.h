@@ -16,8 +16,6 @@ public:
 	virtual float GetWidth() const;
 	virtual float GetHeight() const;
 
-	virtual sf::FloatRect GetBoundingRect() const;
-
 	virtual void Reset();
 
 

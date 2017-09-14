@@ -1,5 +1,6 @@
 #pragma once
 #include "Game_ObjectManager.h"
+#include "PlayArea.h"
 #include "PlayerAvatar.h"
 
 class Game
