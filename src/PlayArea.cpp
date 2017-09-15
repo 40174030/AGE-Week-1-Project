@@ -6,18 +6,22 @@ void PlayArea::Setup()
 {
 	float initialX = 0.0f;
 	float incrementX;
+
 	float screenHeight;
 
-	if (Game::FullscreenCheck())
-	{
-		incrementX = Game::fullscreen_Width / (sizeof(lanes) / sizeof(*lanes));
-		screenHeight = (float)Game::fullscreen_Height;
-	}
-	else
-	{
-		incrementX = (Game::windowed_Width / (sizeof(lanes) / sizeof(*lanes)));
-		screenHeight = (float)Game::windowed_Height;
-	}
+	incrementX = (Game::screen_Width / (sizeof(lanes) / sizeof(*lanes)));
+	screenHeight = (float)Game::screen_Height;
+
+	//if (Game::FullscreenCheck())
+	//{
+	//	incrementX = Game::fullscreen_Width / (sizeof(lanes) / sizeof(*lanes));
+	//	screenHeight = (float)Game::fullscreen_Height;
+	//}
+	//else
+	//{
+	//	incrementX = (Game::windowed_Width / (sizeof(lanes) / sizeof(*lanes)));
+	//	screenHeight = (float)Game::windowed_Height;
+	//}
 
 	for (int x = 0; x < (sizeof(lanes) / sizeof(*lanes)); x++)
 	{

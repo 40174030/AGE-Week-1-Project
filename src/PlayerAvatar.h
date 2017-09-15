@@ -12,7 +12,8 @@ public:
 	void Reset();
 
 private:
-	sf::FloatRect spriteSize;
-	//const float startingPositionX;
-	//const float startingPositionY;
+	bool keyHeld;
+	bool eligibleKeyPressed;
+	float velocity;
+	const float max_velocity = 1500.0f;
 };

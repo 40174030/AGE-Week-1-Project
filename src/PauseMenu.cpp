@@ -23,16 +23,16 @@ PauseMenu::MenuOptions PauseMenu::Show(sf::RenderWindow& window)
 	highlight.setOutlineThickness(10.0f);
 	highlight.setPosition(highlightResume);
 
-	if (!(Game::FullscreenCheck()))
-	{
-		sf::Vector2f scale = sprite.getScale();
-		sf::Vector2f originalSize = highlight.getSize(); 
-		
-		sprite.scale(scale * Game::downscale);
-		highlight.setSize(sf::Vector2f(originalSize * Game::downscale));
-		highlight.setPosition(sf::Vector2f(highlightResume * Game::downscale));
-		highlight.setOutlineThickness(6.7f);
-	}
+	//if (!(Game::FullscreenCheck()))
+	//{
+	//	sf::Vector2f scale = sprite.getScale();
+	//	sf::Vector2f originalSize = highlight.getSize(); 
+	//	
+	//	sprite.scale(scale * Game::downscale);
+	//	highlight.setSize(sf::Vector2f(originalSize * Game::downscale));
+	//	highlight.setPosition(sf::Vector2f(highlightResume * Game::downscale));
+	//	highlight.setOutlineThickness(6.7f);
+	//}
 
 	window.draw(sprite);
 
@@ -46,18 +46,18 @@ void PauseMenu::moveHighlight(sf::RenderWindow& window, PauseMenu::MenuOptions n
 	{
 	case Resume_Game:
 	{
-		if (Game::FullscreenCheck())
+		//if (Game::FullscreenCheck())
 			highlight.setPosition(highlightResume);
-		else
-			highlight.setPosition(sf::Vector2f(highlightResume* Game::downscale));
+		//else
+		//	highlight.setPosition(sf::Vector2f(highlightResume* Game::downscale));
 		break;
 	}
 	case Back_to_Main:
 	{
-		if (Game::FullscreenCheck())
+		//if (Game::FullscreenCheck())
 			highlight.setPosition(highlightBackTo);
-		else
-			highlight.setPosition(sf::Vector2f(highlightBackTo * Game::downscale));
+		//else
+		//	highlight.setPosition(sf::Vector2f(highlightBackTo * Game::downscale));
 		break;
 	}
 	}

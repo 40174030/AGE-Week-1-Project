@@ -13,7 +13,7 @@ void Game::Start()
 
 	gameState = Game::ShowingTitle;
 
-	ChangeResolution();
+	ChangeFullscreen();
 
 	PlayerAvatar* player = new PlayerAvatar();
 
@@ -32,23 +32,23 @@ bool Game::FullscreenCheck()
 	return fullscreen;
 }
 
-void Game::ChangeResolution()
+void Game::ChangeFullscreen()
 {
 	if (mainWindow.isOpen())
 		mainWindow.close();
 	if (FullscreenCheck())
 	{
 		mainWindow.create(sf::VideoMode(
-			windowed_Width, 
-			windowed_Height, 
+			screen_Width, 
+			screen_Height, 
 			32), "Cutting Corners");
 		fullscreen = false;
 	}
 	else
 	{
 		mainWindow.create(sf::VideoMode(
-			fullscreen_Width, 
-			fullscreen_Height, 
+			screen_Width, 
+			screen_Height, 
 			32), "Cutting Corners", 
 			sf::Style::Fullscreen);
 		fullscreen = true;
@@ -222,7 +222,6 @@ void Game::GameLoop()
 
 bool Game::fullscreen = false;
 int Game::currentLevel = 1;
-const float Game::downscale = 2.0f / 3.0f;
 Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;
 Game_ObjectManager Game::game_objectManager;

@@ -10,14 +10,9 @@ public:
 
 	static bool FullscreenCheck();
 
-	const static int fullscreen_Width = 1920;
-	const static int fullscreen_Height = 1080;
-
-	const static int windowed_Width = 1280;
-	const static int windowed_Height = 720;
-
-	const static float downscale;
-
+	const static int screen_Width = 1920;
+	const static int screen_Height = 1080;
+	
 private:
 	enum GameState
 	{
@@ -37,7 +32,8 @@ private:
 	static sf::RenderWindow mainWindow;
 	static Game_ObjectManager game_objectManager;
 
-	static void ChangeResolution();
+	static void ChangeFullscreen();
+	static void ChangeResolution(int width, int height);
 
 	static void GameLoop();
 	static bool IsExiting();

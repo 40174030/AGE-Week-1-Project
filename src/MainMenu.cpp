@@ -23,16 +23,16 @@ MainMenu::MenuOptions MainMenu::Show(sf::RenderWindow& window)
 	highlight.setOutlineThickness(10.0f);
 	highlight.setPosition(highlightPlayGame);
 
-	if (!(Game::FullscreenCheck()))
-	{
-		sf::Vector2f scale = sprite.getScale();
-		sf::Vector2f originalSize = highlight.getSize();
-		
-		sprite.scale(scale * Game::downscale);
-		highlight.setSize(sf::Vector2f(originalSize * Game::downscale));
-		highlight.setPosition(sf::Vector2f(highlightPlayGame * Game::downscale));
-		highlight.setOutlineThickness(6.7f);
-	}
+	//if (!(Game::FullscreenCheck()))
+	//{
+	//	sf::Vector2f scale = sprite.getScale();
+	//	sf::Vector2f originalSize = highlight.getSize();
+	//	
+	//	sprite.scale(scale * Game::downscale);
+	//	highlight.setSize(sf::Vector2f(originalSize * Game::downscale));
+	//	highlight.setPosition(sf::Vector2f(highlightPlayGame * Game::downscale));
+	//	highlight.setOutlineThickness(6.7f);
+	//}
 
 	window.draw(sprite);
 
@@ -108,34 +108,34 @@ void MainMenu::moveHighlight(sf::RenderWindow& window, MainMenu::MenuOptions new
 	{
 	case Play_Game:
 	{
-		if (Game::FullscreenCheck())
+	//	if (Game::FullscreenCheck())
 			highlight.setPosition(highlightPlayGame);
-		else
-			highlight.setPosition(sf::Vector2f(highlightPlayGame * Game::downscale));
+	//	else
+	//		highlight.setPosition(sf::Vector2f(highlightPlayGame * Game::downscale));
 		break;
 	}
 	case How_to_Play:
 	{
-		if (Game::FullscreenCheck())
+	//	if (Game::FullscreenCheck())
 			highlight.setPosition(highlightHowToPlay);
-		else
-			highlight.setPosition(sf::Vector2f(highlightHowToPlay * Game::downscale));
+	//	else
+	//		highlight.setPosition(sf::Vector2f(highlightHowToPlay * Game::downscale));
 		break;
 	}
 	case Settings:
 	{
-		if (Game::FullscreenCheck())
+	//	if (Game::FullscreenCheck())
 			highlight.setPosition(highlightSettings);
-		else
-			highlight.setPosition(sf::Vector2f(highlightSettings * Game::downscale));
+	//	else
+	//		highlight.setPosition(sf::Vector2f(highlightSettings * Game::downscale));
 		break;
 	}
 	case Quit_Game:
 	{
-		if (Game::FullscreenCheck())
+	//	if (Game::FullscreenCheck())
 			highlight.setPosition(highlightQuitGame);
-		else
-			highlight.setPosition(sf::Vector2f(highlightQuitGame * Game::downscale));
+	//	else
+	//		highlight.setPosition(sf::Vector2f(highlightQuitGame * Game::downscale));
 		break;
 	}
 	}
