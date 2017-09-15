@@ -47,30 +47,24 @@ void PlayerAvatar::Update(float elapsedTime)
 	{
 		sf::Vector2f pos = this->GetPosition();
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
 		{
 			eligibleKeyPressed = true;
-			if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
-			{
-				keyHeld = true;
-				if (pos.x < GetSprite().getGlobalBounds().width / 2)
-					velocity = 0.0f;
-				else
-					velocity = -max_velocity;
-			}
+			keyHeld = true;
+			if (pos.x < GetSprite().getGlobalBounds().width / 2)
+				velocity = 0.0f;
+			else
+				velocity = -max_velocity;
 		}
 
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
 		{
 			eligibleKeyPressed = true;
-			if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
-			{
-				keyHeld = true;
-				if (pos.x > (Game::screen_Width - GetSprite().getLocalBounds().width / 2))
-					velocity = 0.0f;
-				else
-					velocity = max_velocity;
-			}
+			keyHeld = true;
+			if (pos.x > (Game::screen_Width - GetSprite().getLocalBounds().width / 2))
+				velocity = 0.0f;
+			else
+				velocity = max_velocity;
 		}
 	}
 	
