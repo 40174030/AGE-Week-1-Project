@@ -10,13 +10,13 @@ void PlayArea::Setup()
 
 	if (Game::FullscreenCheck())
 	{
-		incrementX = Game::screen_Width / (sizeof(lanes) / sizeof(*lanes));
-		screenHeight = (float)Game::screen_Height;
+		incrementX = Game::fullscreen_Width / (sizeof(lanes) / sizeof(*lanes));
+		screenHeight = (float)Game::fullscreen_Height;
 	}
 	else
 	{
-		incrementX = (Game::screen_Width / (sizeof(lanes) / sizeof(*lanes))) * Game::downscale;
-		screenHeight = (float)Game::screen_Height * Game::downscale;
+		incrementX = (Game::windowed_Width / (sizeof(lanes) / sizeof(*lanes)));
+		screenHeight = (float)Game::windowed_Height;
 	}
 
 	for (int x = 0; x < (sizeof(lanes) / sizeof(*lanes)); x++)
@@ -46,8 +46,6 @@ void PlayArea::Draw(sf::RenderWindow& window, int level)
 		lanes[x].setFillColor(sf::Color(255, 255, 0));
 		window.draw(lanes[x]);
 	}
-
-	window.display();
 }
 
 void PlayArea::Reset()

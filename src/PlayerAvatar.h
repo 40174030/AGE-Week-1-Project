@@ -10,4 +10,9 @@ public:
 	void Update(float elapsedTime);
 	void Draw(sf::RenderWindow& window);
 	void Reset();
+
+private:
+	sf::FloatRect spriteSize;
+	//const float startingPositionX;
+	//const float startingPositionY;
 };

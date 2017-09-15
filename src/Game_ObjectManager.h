@@ -23,6 +23,8 @@ private:
 
 	sf::Clock clock;
 
+	
+
 	struct Game_ObjectDeallocator
 	{
 		void operator()(const std::pair<std::string, Game_Object*>& p) const

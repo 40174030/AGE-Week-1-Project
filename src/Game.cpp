@@ -39,17 +39,17 @@ void Game::ChangeResolution()
 	if (FullscreenCheck())
 	{
 		mainWindow.create(sf::VideoMode(
-			((int)(screen_Width * (2.0f / 3.0f))), 
-			((int)(screen_Height * (2.0f / 3.0f))), 
-			32), "As Yet Unnamed");
+			windowed_Width, 
+			windowed_Height, 
+			32), "Cutting Corners");
 		fullscreen = false;
 	}
 	else
 	{
 		mainWindow.create(sf::VideoMode(
-			screen_Width, 
-			screen_Height, 
-			32), "As Yet Unnamed", 
+			fullscreen_Width, 
+			fullscreen_Height, 
+			32), "Cutting Corners", 
 			sf::Style::Fullscreen);
 		fullscreen = true;
 	}
@@ -187,7 +187,7 @@ void Game::GameLoop()
 
 		PlayArea playArea;
 		playArea.Setup();
-		playArea.Draw(mainWindow, 1);
+		playArea.Draw(mainWindow, currentLevel);
 		game_objectManager.UpdateAll();
 		game_objectManager.DrawAll(mainWindow);
 
@@ -221,6 +221,7 @@ void Game::GameLoop()
 }
 
 bool Game::fullscreen = false;
+int Game::currentLevel = 1;
 const float Game::downscale = 2.0f / 3.0f;
 Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;
