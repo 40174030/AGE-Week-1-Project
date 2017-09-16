@@ -4,11 +4,16 @@
 class PlayArea
 {
 public:
-	void Setup();
-	void Draw(sf::RenderWindow& window, int level);
-	void Update(int level);
-	void Reset();
+	static void Setup();
+	static void Draw(sf::RenderWindow& window, int level);
+	static void Reset();
+	static int GetLeftmostLane();
+	static int GetRightmostLane();
+
+	static sf::RectangleShape lanes[10];
 
 private:
-	sf::RectangleShape lanes[10];
+	static int level;
+	static int laneLeftmost;
+	static int laneRightmost;
 };

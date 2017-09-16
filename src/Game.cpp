@@ -13,6 +13,7 @@ void Game::Start()
 
 	gameState = Game::ShowingTitle;
 
+	ChangeResolution(resOptions);
 	ChangeFullscreen();
 
 	PlayerAvatar* player = new PlayerAvatar();
@@ -32,27 +33,36 @@ bool Game::FullscreenCheck()
 	return fullscreen;
 }
 
+Game_ObjectManager& Game::GetGOM()
+{
+	return Game::game_objectManager;
+}
+
 void Game::ChangeFullscreen()
 {
 	if (mainWindow.isOpen())
 		mainWindow.close();
+
 	if (FullscreenCheck())
 	{
 		mainWindow.create(sf::VideoMode(
-			screen_Width, 
-			screen_Height, 
+			mainWindow.getSize().x, 
+			mainWindow.getSize().y, 
 			32), "Cutting Corners");
 		fullscreen = false;
 	}
 	else
 	{
 		mainWindow.create(sf::VideoMode(
-			screen_Width, 
-			screen_Height, 
+			mainWindow.getSize().x,
+			mainWindow.getSize().y,
 			32), "Cutting Corners", 
 			sf::Style::Fullscreen);
 		fullscreen = true;
 	}
+
+	mainWindow.setView(sf::View(sf::FloatRect(0.0f, 0.0f, screen_Width, screen_Height)));
+
 	switch (gameState)
 	{
 	case Game::ShowingTitle:
@@ -64,8 +74,35 @@ void Game::ChangeFullscreen()
 		ShowSettingsMenu();
 		break;
 	}
-
 	}
+}
+
+void Game::ChangeResolution(Resolution resSelection)
+{
+	sf::Vector2u full_hd = sf::Vector2u(screen_Width, screen_Height);
+	sf::Vector2u hd = sf::Vector2u(1280, 720);
+	sf::Vector2u sd = sf::Vector2u(720, 480);
+
+	switch (resSelection)
+	{
+	case Full_HD:
+	{
+		mainWindow.setSize(full_hd);
+		break;
+	}
+	case HD:
+	{
+		mainWindow.setSize(hd);
+		break;
+	}
+	case SD:
+	{
+		mainWindow.setSize(sd);
+		break;
+	}
+	}
+
+	mainWindow.setView(sf::View(sf::FloatRect(0.0f, 0.0f, screen_Width, screen_Height)));
 }
 
 void Game::ShowTitleScreen()
@@ -185,9 +222,8 @@ void Game::GameLoop()
 	{
 		mainWindow.clear();
 
-		PlayArea playArea;
-		playArea.Setup();
-		playArea.Draw(mainWindow, currentLevel);
+		PlayArea::Setup();
+		PlayArea::Draw(mainWindow, currentLevel);
 		game_objectManager.UpdateAll();
 		game_objectManager.DrawAll(mainWindow);
 
@@ -220,8 +256,10 @@ void Game::GameLoop()
 	}
 }
 
+sf::View Game::resolution;
 bool Game::fullscreen = false;
 int Game::currentLevel = 1;
 Game::GameState Game::gameState = Uninitialized;
+Game::Resolution Game::resOptions = Full_HD;
 sf::RenderWindow Game::mainWindow;
 Game_ObjectManager Game::game_objectManager;

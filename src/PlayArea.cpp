@@ -34,9 +34,6 @@ void PlayArea::Setup()
 
 void PlayArea::Draw(sf::RenderWindow& window, int level)
 {
-	int laneLeftmost;
-	int laneRightmost;
-
 	switch (level)
 	{
 	case 1: { laneLeftmost = 3; laneRightmost = 6; break; }
@@ -45,9 +42,12 @@ void PlayArea::Draw(sf::RenderWindow& window, int level)
 	case 4: { laneLeftmost = 0; laneRightmost = 9; break; }
 	}
 
-	for (int x = laneLeftmost; x <= laneRightmost; x++)
+	for (int x = 0; x < (sizeof(lanes) / sizeof(*lanes)); x++)
 	{
-		lanes[x].setFillColor(sf::Color(255, 255, 0));
+		if (x < laneLeftmost || x > laneRightmost)
+			lanes[x].setFillColor(sf::Color(0, 0, 0));
+		else
+			lanes[x].setFillColor(sf::Color(255, 255, 0));
 		window.draw(lanes[x]);
 	}
 }
@@ -57,7 +57,17 @@ void PlayArea::Reset()
 
 }
 
-void PlayArea::Update(int level)
+int PlayArea::GetLeftmostLane()
 {
-
+	return laneLeftmost;
 }
+
+int PlayArea::GetRightmostLane()
+{
+	return laneRightmost;
+}
+
+sf::RectangleShape PlayArea::lanes[10];
+int PlayArea::level;
+int PlayArea::laneLeftmost;
+int PlayArea::laneRightmost;

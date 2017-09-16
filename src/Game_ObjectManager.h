@@ -10,7 +10,8 @@ public:
 	void Add(std::string name, Game_Object* gameObject);
 	void Remove(std::string name);
 	int GetObjectCount() const;
-	Game_Object* Get(std::string name) const;
+	Game_Object* GetSingleObject(std::string name) const;
+	std::map<std::string, Game_Object*>& GetAllObjects();
 
 	void DrawAll(sf::RenderWindow& renderWindow);
 	void UpdateAll();
@@ -22,8 +23,6 @@ private:
 	std::map<std::string, Game_Object*> game_objects;
 
 	sf::Clock clock;
-
-	
 
 	struct Game_ObjectDeallocator
 	{

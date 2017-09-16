@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "PlayerAvatar.h"
+#include "PlayerProjectile.h"
 #include "Game.h"
 
-PlayerAvatar::PlayerAvatar() : velocity(0.0f)
+PlayerAvatar::PlayerAvatar() : projectilesFired(0), velocity(0.0f), sinceLastFire(0.0f)
 {
 	Load("res/img/Avatar.png");
 	assert(IsLoaded());
@@ -16,9 +17,7 @@ PlayerAvatar::PlayerAvatar() : velocity(0.0f)
 
 	GetSprite().setOrigin(GetSprite().getGlobalBounds().width / 2, GetSprite().getGlobalBounds().height / 2);
 	Reset();
-
-	keyHeld = false;
-	eligibleKeyPressed = false;
+	fireClock.restart().asSeconds();
 }
 
 PlayerAvatar::~PlayerAvatar() {}
@@ -41,42 +40,61 @@ void PlayerAvatar::Reset()
 	//}
 }
 
+std::map<std::string, Game_Object*>::iterator FindPrefix(std::map<std::string, Game_Object*>& objectList, std::string prefix)
+{
+	std::map<std::string, Game_Object*>::iterator i = objectList.lower_bound(prefix);
+	if (i != objectList.end()) {
+		const std::string& key = i->first;
+		if (key.compare(0, prefix.size(), prefix) == 0)
+			return i;
+	}
+	return objectList.end();
+}
+
 void PlayerAvatar::Update(float elapsedTime)
 {
-	if (!keyHeld)
-	{
-		sf::Vector2f pos = this->GetPosition();
+	sinceLastFire += fireClock.getElapsedTime().asSeconds();
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
-		{
-			eligibleKeyPressed = true;
-			keyHeld = true;
-			if (pos.x < GetSprite().getGlobalBounds().width / 2)
-				velocity = 0.0f;
-			else
-				velocity = -max_velocity;
-		}
-
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
-		{
-			eligibleKeyPressed = true;
-			keyHeld = true;
-			if (pos.x > (Game::screen_Width - GetSprite().getLocalBounds().width / 2))
-				velocity = 0.0f;
-			else
-				velocity = max_velocity;
-		}
-	}
+	float boundaryLeft = PlayArea::lanes[PlayArea::GetLeftmostLane()].getGlobalBounds().left;
+	float boundaryRight = PlayArea::lanes[PlayArea::GetRightmostLane()].getPosition().x + 
+						  PlayArea::lanes[PlayArea::GetRightmostLane()].getGlobalBounds().width;
 	
-	if (eligibleKeyPressed)
+	// MOVEMENT
+	sf::Vector2f pos = this->GetPosition();
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
 	{
-		eligibleKeyPressed = false;
-		keyHeld = false;
+		if (pos.x < (boundaryLeft + GetSprite().getGlobalBounds().width / 2))
+			velocity = 0.0f;
+		else
+			velocity = -max_velocity;
 	}
+
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
+	{
+		if (pos.x > (boundaryRight - GetSprite().getLocalBounds().width / 2))
+			velocity = 0.0f;
+		else
+			velocity = max_velocity;
+	}
+
 	else
 	{
 		velocity = 0.0f;
 	}
 
 	GetSprite().move(velocity * elapsedTime, 0);
+
+	// FIRING
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		if (sinceLastFire >= fireRate)
+		{
+			PlayerProjectile* proj = new PlayerProjectile();
+			projectilesFired++;
+			Game::GetGOM().Add("Projectile" + projectilesFired, proj);
+			sinceLastFire = 0.0f;
+			fireClock.restart().asSeconds();
+		}
+	}
 }

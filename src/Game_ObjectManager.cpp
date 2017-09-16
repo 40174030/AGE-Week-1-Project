@@ -24,12 +24,17 @@ void Game_ObjectManager::Remove(std::string name)
 	}
 }
 
-Game_Object* Game_ObjectManager::Get(std::string name) const
+Game_Object* Game_ObjectManager::GetSingleObject(std::string name) const
 {
 	std::map<std::string, Game_Object*>::const_iterator results = game_objects.find(name);
 	if (results == game_objects.end())
 		return NULL;
 	return results->second;
+}
+
+std::map<std::string, Game_Object*>& Game_ObjectManager::GetAllObjects()
+{
+	return game_objects;
 }
 
 int Game_ObjectManager::GetObjectCount() const
@@ -49,12 +54,14 @@ void Game_ObjectManager::DrawAll(sf::RenderWindow& renderWindow)
 
 void Game_ObjectManager::UpdateAll()
 {
-	std::map<std::string, Game_Object*>::const_iterator itr = game_objects.begin();
 	float timeDelta = clock.restart().asSeconds();
 
-	while (itr != game_objects.end())
+	std::map<std::string, Game_Object*>::reverse_iterator itr = game_objects.rbegin();
+	while (itr != game_objects.rend())
 	{
 		itr->second->Update(timeDelta);
+		if (itr->second->HasVanished())
+			Remove(itr->first);
 		itr++;
 	}
 }

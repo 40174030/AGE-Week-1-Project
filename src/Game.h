@@ -9,6 +9,7 @@ public:
 	static void Start();
 
 	static bool FullscreenCheck();
+	static Game_ObjectManager& GetGOM();
 
 	const static int screen_Width = 1920;
 	const static int screen_Height = 1080;
@@ -25,15 +26,24 @@ private:
 		Paused,
 		Exiting
 	};
+
+	enum Resolution
+	{
+		Full_HD,
+		HD,
+		SD
+	};
 	
+	static sf::View resolution;
 	static bool fullscreen;
 	static int currentLevel;
 	static GameState gameState;
+	static Resolution resOptions;
 	static sf::RenderWindow mainWindow;
 	static Game_ObjectManager game_objectManager;
 
 	static void ChangeFullscreen();
-	static void ChangeResolution(int width, int height);
+	static void ChangeResolution(Resolution selection);
 
 	static void GameLoop();
 	static bool IsExiting();

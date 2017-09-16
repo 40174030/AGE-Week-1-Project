@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Game_Object.h"
 
-Game_Object::Game_Object() : isLoaded(false) {}
+Game_Object::Game_Object() : isLoaded(false), vanished(false) {}
 
 Game_Object::~Game_Object() {}
 
@@ -55,6 +55,21 @@ bool Game_Object::IsLoaded() const
 {
 	return isLoaded;
 }
+
+void Game_Object::Vanish()
+{
+	vanished = true;
+}
+
+bool Game_Object::HasVanished() const
+{
+	return vanished;
+}
+//
+//std::string Game_Object::GetFilename() const
+//{
+//	return filename;
+//}
 
 float Game_Object::GetHeight() const
 {
