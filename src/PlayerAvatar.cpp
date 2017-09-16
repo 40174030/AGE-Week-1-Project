@@ -17,7 +17,7 @@ PlayerAvatar::PlayerAvatar() : projectilesFired(0), velocity(0.0f), sinceLastFir
 
 	GetSprite().setOrigin(GetSprite().getGlobalBounds().width / 2, GetSprite().getGlobalBounds().height / 2);
 	Reset();
-	fireClock.restart().asSeconds();
+	fireClock.restart();
 }
 
 PlayerAvatar::~PlayerAvatar() {}
@@ -53,7 +53,7 @@ std::map<std::string, Game_Object*>::iterator FindPrefix(std::map<std::string, G
 
 void PlayerAvatar::Update(float elapsedTime)
 {
-	sinceLastFire += fireClock.getElapsedTime().asSeconds();
+	sinceLastFire = fireClock.getElapsedTime().asSeconds();
 
 	float boundaryLeft = PlayArea::lanes[PlayArea::GetLeftmostLane()].getGlobalBounds().left;
 	float boundaryRight = PlayArea::lanes[PlayArea::GetRightmostLane()].getPosition().x + 
@@ -88,13 +88,15 @@ void PlayerAvatar::Update(float elapsedTime)
 	// FIRING
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		if (sinceLastFire >= fireRate)
+		if (sinceLastFire > fireRate)
 		{
 			PlayerProjectile* proj = new PlayerProjectile();
 			projectilesFired++;
-			Game::GetGOM().Add("Projectile" + projectilesFired, proj);
+			std::string projID = "Projectile" + std::to_string(projectilesFired);
+			Game::GetGOM().Add(projID, proj);
+			std::cout << projID << std::endl;
 			sinceLastFire = 0.0f;
-			fireClock.restart().asSeconds();
+			fireClock.restart();
 		}
 	}
 }

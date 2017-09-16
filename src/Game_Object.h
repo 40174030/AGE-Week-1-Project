@@ -17,7 +17,7 @@ public:
 	virtual bool IsLoaded() const;
 	virtual bool HasVanished() const;
 
-	//virtual std::string GetFilename() const;
+	virtual std::string GetFilename() const;
 	virtual float GetWidth() const;
 	virtual float GetHeight() const;
 

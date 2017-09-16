@@ -65,11 +65,11 @@ bool Game_Object::HasVanished() const
 {
 	return vanished;
 }
-//
-//std::string Game_Object::GetFilename() const
-//{
-//	return filename;
-//}
+
+std::string Game_Object::GetFilename() const
+{
+	return filename;
+}
 
 float Game_Object::GetHeight() const
 {
