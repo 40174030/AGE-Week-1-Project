@@ -1,5 +1,4 @@
 #pragma once
-#include "Game_Object.h"
 
 class PlayArea
 {

@@ -13,9 +13,11 @@ public:
 
 private:
 	sf::Clock fireClock;
+	float health;
 	float velocity;
 	int projectilesFired;
 	float sinceLastFire;
-	const float fireRate = 0.1f;
-	const float max_velocity = 1500.0f;
+	float fireRate_Current;
+	const float fireRate_Original = 0.2f;
+	const float max_velocity = 1000.0f;
 };

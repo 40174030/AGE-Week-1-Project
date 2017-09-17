@@ -68,6 +68,6 @@ int PlayArea::GetRightmostLane()
 }
 
 sf::RectangleShape PlayArea::lanes[10];
-int PlayArea::level;
+//int PlayArea::level;
 int PlayArea::laneLeftmost;
 int PlayArea::laneRightmost;

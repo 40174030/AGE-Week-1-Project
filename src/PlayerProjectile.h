@@ -12,5 +12,5 @@ public:
 
 private:
 	float damage;
-	const float velocity = 1500.0f;
+	const float velocity = -1500.0f;
 };

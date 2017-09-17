@@ -22,9 +22,27 @@ void PlayerProjectile::Draw(sf::RenderWindow & window)
 
 void PlayerProjectile::Update(float elapsedTime)
 {
-	GetSprite().move(0, -velocity * elapsedTime);
+	GetSprite().move(0, velocity * elapsedTime);
+
 	if (GetSprite().getPosition().y < 0.0f)
 	{
 		Vanish();
+	}
+	
+	std::map<std::string, Game_Object*>::iterator itr = Game::GetGOM().GetAllObjects().begin();
+	while (itr != Game::GetGOM().GetAllObjects().end())
+	{
+		if (strstr(itr->first.c_str(), "Enemy"))
+		{
+			if (GetSprite().getGlobalBounds().intersects(itr->second->GetSprite().getGlobalBounds()))
+			{
+				Enemy* enemy = static_cast<Enemy*>(Game::GetGOM().GetSingleObject(itr->first));
+				enemy->Damaged(damage);
+				if (enemy->GetHealth() == 0.0f)
+					enemy->Vanish();
+				Vanish();
+			}
+		}
+		itr++;
 	}
 }

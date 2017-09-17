@@ -1,5 +1,8 @@
 #pragma once
 
+#define STANDARD 0
+#define SCOUT 1
+#define TANK 2
 
 class Game_Object
 {
@@ -21,7 +24,6 @@ public:
 	virtual float GetWidth() const;
 	virtual float GetHeight() const;
 
-protected:
 	sf::Sprite& GetSprite();
 	void Vanish();
 
