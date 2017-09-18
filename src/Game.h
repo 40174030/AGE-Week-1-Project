@@ -13,6 +13,7 @@ public:
 	static int GetCurrentLevel();
 	static int& GetYourScore();
 	static int& GetHighScore();
+	static PlayerAvatar* ReturnPlayer();
 
 	const static int screen_Width = 1920;
 	const static int screen_Height = 1080;
@@ -38,9 +39,7 @@ private:
 		SD
 	};
 	
-	//static sf::View resolution;
 	static Resolution resOptions;
-	//static bool fullscreen;
 	static bool paused;
 	static int currentLevel;
 	static sf::Clock spawnClock;
@@ -54,13 +53,10 @@ private:
 	static sf::View windowView;
 	static Game_ObjectManager game_objectManager;
 
-	//static void ChangeFullscreen();
 	static void ChangeResolution(Resolution selection);
-
 	static void GameLoop();
 	static bool IsExiting();
 	static void ResetAllClocks();
-
 	static void ShowTitleScreen();
 	static void ShowMainMenu();
 	static void ShowHowToPlay();

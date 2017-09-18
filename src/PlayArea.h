@@ -5,7 +5,7 @@ class PlayArea
 public:
 	static void Setup();
 	static void DrawEnvironment(sf::RenderWindow& window, int level);
-	static void DrawHUD(sf::RenderWindow& window, int yourScore, int highScore);
+	static void DrawHUD(sf::RenderWindow& window, int yourScore, int highScore, float yourHealth);
 	static int GetLeftmostLane();
 	static int GetRightmostLane();
 

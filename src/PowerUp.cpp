@@ -18,11 +18,20 @@ PowerUp::~PowerUp() {}
 
 void PowerUp::Update(float elapsedTime)
 {
-	frameTime.restart();
 	if (powerRemaining <= 0.0f)
+	{
+		PlayerAvatar* player = Game::ReturnPlayer();
+		switch (GetPowerType())
+		{
+		case STANDARD: { player->DeactivateRecovery(); break; }
+		case SCOUT: { player->DeactivateSloMo(); break; }
+		case TANK: { player->DeactivateSuperFire(); break; }
+		}
 		Vanish();
+	}
 	else
 		powerRemaining -= frameTime.getElapsedTime().asSeconds();
+	frameTime.restart();
 }
 
 void PowerUp::Draw(sf::RenderWindow & window)

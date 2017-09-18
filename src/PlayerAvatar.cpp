@@ -4,17 +4,12 @@
 #include "PowerUp.h"
 #include "Game.h"
 
-PlayerAvatar::PlayerAvatar() : health(100.0f), projectilesFired(0), velocity(0.0f), sinceLastFire(0.0f)
+PlayerAvatar::PlayerAvatar() : health(100.0f), projectilesFired(0), 
+							   velocity(0.0f), sinceLastFire(0.0f),
+							   active_Recovery(false), active_SloMo(false), active_SuperFire(false)
 {
 	Load("res/img/Avatar.png");
 	assert(IsLoaded());
-
-	//if (!Game::FullscreenCheck())
-	//{
-	//	sf::Vector2f originalScale = GetSprite().getScale();
-	//	sf::Vector2f downscaleVector = sf::Vector2f(Game::downscale, Game::downscale);
-	//	GetSprite().scale(originalScale.x * downscaleVector.x, originalScale.y * downscaleVector.y);
-	//}
 
 	GetSprite().setOrigin(GetSprite().getGlobalBounds().width / 2, GetSprite().getGlobalBounds().height / 2);
 	fireClock.restart();
@@ -32,14 +27,42 @@ void PlayerAvatar::Reset()
 	SetPosition((Game::screen_Width / 2), 
 		(Game::screen_Height - GetSprite().getLocalBounds().height / 2) - PlayArea::HUD.getLocalBounds().height + 2.0f);
 	GetSprite().setRotation(0.0f);
-	//if (Game::FullscreenCheck())
-	//{
-	//	SetPosition((Game::fullscreen_Width / 2), (Game::fullscreen_Height - GetSprite().getGlobalBounds().height / 2));
-	//}
-	//else
-	//{
-	//	SetPosition((Game::windowed_Width / 2), (Game::windowed_Height - GetSprite().getGlobalBounds().height / 2));
-	//}
+	health = 100.0f;
+}
+
+float& PlayerAvatar::GetHealth()
+{
+	return health;
+}
+
+bool PlayerAvatar::IsRecoveryActive()
+{
+	return active_Recovery;
+}
+
+bool PlayerAvatar::IsSloMoActive()
+{
+	return active_SloMo;
+}
+
+bool PlayerAvatar::IsSuperFireActive()
+{
+	return active_SuperFire;
+}
+
+void PlayerAvatar::DeactivateRecovery()
+{
+	active_Recovery = false;
+}
+
+void PlayerAvatar::DeactivateSloMo()
+{
+	active_SloMo = false;
+}
+
+void PlayerAvatar::DeactivateSuperFire()
+{
+	active_SuperFire = false;
 }
 
 void PlayerAvatar::Update(float elapsedTime)
@@ -64,11 +87,17 @@ void PlayerAvatar::Update(float elapsedTime)
 			case STANDARD:
 			{
 				if (health < 100.0f)
-					health += 1.0f;
+				{
+					active_Recovery = true;
+					health += 0.02f;
+				}
+				else if (health >= 100.0f)
+					health = 100.0f;
 				break;
 			}
 			case SCOUT:
 			{
+				active_SloMo = true;
 				std::map<std::string, Game_Object*>::iterator itr = Game::GetGOM().GetAllObjects().begin();
 				while (itr != Game::GetGOM().GetAllObjects().end())
 				{
@@ -83,6 +112,7 @@ void PlayerAvatar::Update(float elapsedTime)
 			}
 			case TANK:
 			{
+				active_SuperFire = true;
 				fireRate_Current = fireRate_Original / 5.0f;
 				break;
 			}
@@ -101,7 +131,7 @@ void PlayerAvatar::Update(float elapsedTime)
 		else
 		{
 			velocity = -max_velocity;
-			GetSprite().rotate(-0.25f);
+			GetSprite().rotate(-1.0f);
 		}
 	}
 
@@ -112,7 +142,7 @@ void PlayerAvatar::Update(float elapsedTime)
 		else
 		{
 			velocity = max_velocity;
-			GetSprite().rotate(0.25f);
+			GetSprite().rotate(1.0f);
 		}
 	}
 

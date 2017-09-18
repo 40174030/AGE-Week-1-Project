@@ -21,6 +21,7 @@ private:
 	int ID_suffix;
 	float health;
 	int points;
+	float damage;
 	float currentVelocity;
 	float originalVelocity;
 };
