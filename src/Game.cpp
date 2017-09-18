@@ -24,6 +24,7 @@ void Game::Start()
 
 	mainWindow.setView(sf::View(sf::FloatRect(0.0f, 0.0f, screen_Width, screen_Height)));
 
+	PlayArea::Setup();
 	PlayerAvatar* player = new PlayerAvatar();
 
 	game_objectManager.Add("Player", player);
@@ -126,13 +127,18 @@ void Game::ShowTitleScreen()
 		gameState = Game::Exiting;
 	else
 		gameState = Game::ShowingMain;
+	ResetAllClocks();
 }
 
 void Game::ShowMainMenu()
 {
 	MainMenu mainMenu;
 	MainMenu::MenuOptions result = mainMenu.Show(mainWindow);
-	game_objectManager.GetClock().restart();
+
+	currentLevel = 1;
+	timeUntilNextLevel = levelDuration;
+	EnemyFactory::SetFirstSpawn();
+	ResetAllClocks();
 
 	switch (result)
 	{
@@ -167,6 +173,7 @@ void Game::ShowHowToPlay()
 		gameState = Game::Exiting;
 	else
 		gameState = Game::ShowingMain;
+	ResetAllClocks();
 }
 
 void Game::ShowSettingsMenu()
@@ -177,12 +184,15 @@ void Game::ShowSettingsMenu()
 		gameState = Game::Exiting;
 	else
 		gameState = Game::ShowingMain;
+	ResetAllClocks();
 }
 
 void Game::ShowPauseMenu()
 {
 	PauseMenu pauseMenu;
 	PauseMenu::MenuOptions result = pauseMenu.Show(mainWindow);
+
+	ResetAllClocks();
 
 	switch (result)
 	{
@@ -227,34 +237,31 @@ void Game::GameLoop()
 	}
 	case Game::ShowingMain:
 	{
-		ShowMainMenu();
 		game_objectManager.ResetAll();
+		ShowMainMenu();
+		EnemyFactory::SetFirstSpawn();
+		EnemyFactory::SetTimeUntilNextSpawn();
 		break;
 	}
 	case Game::Playing:
 	{
 		mainWindow.clear();
 
-		if (justStarted)
-		{
-			justStarted = false;
-			levelProgress.restart();
-		}
-
-		if ((levelProgress.getElapsedTime().asSeconds() >= 10.0f)
-			&& currentLevel < 4)
+		if (timeUntilNextLevel <= 0.0f && currentLevel < 4)
 		{
 			currentLevel++;
-			levelProgress.restart();
+			timeUntilNextLevel = levelDuration;
 		}
+		else
+			timeUntilNextLevel -= frameTime.getElapsedTime().asSeconds();
 
-		PlayArea::Setup();
-		PlayArea::Draw(mainWindow, currentLevel);
+		frameTime.restart();
 
+		PlayArea::DrawEnvironment(mainWindow, currentLevel);
 		EnemyFactory::SpawnEnemy();
-
 		game_objectManager.UpdateAll();
 		game_objectManager.DrawAll(mainWindow);
+		PlayArea::DrawHUD(mainWindow);
 
 		mainWindow.display();
 
@@ -285,12 +292,20 @@ void Game::GameLoop()
 	}
 }
 
+void Game::ResetAllClocks()
+{
+	game_objectManager.GetClock().restart();
+	EnemyFactory::GetSpawnClock().restart();
+	frameTime.restart();
+}
+
 //bool Game::fullscreen = false;
 //sf::View Game::resolution;
 //Game::Resolution Game::resOptions = Full_HD;
-bool Game::justStarted = true;
 int Game::currentLevel = 1;
-sf::Clock Game::levelProgress;
+sf::Clock Game::frameTime;
+const float Game::levelDuration = 20.0f;
+float Game::timeUntilNextLevel = Game::levelDuration; 
 Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;
 Game_ObjectManager Game::game_objectManager;

@@ -4,12 +4,13 @@ class PlayArea
 {
 public:
 	static void Setup();
-	static void Draw(sf::RenderWindow& window, int level);
-	static void Reset();
+	static void DrawEnvironment(sf::RenderWindow& window, int level);
+	static void DrawHUD(sf::RenderWindow& window);
 	static int GetLeftmostLane();
 	static int GetRightmostLane();
 
 	static sf::RectangleShape lanes[10];
+	static sf::RectangleShape HUD;
 
 private:
 	static int level;

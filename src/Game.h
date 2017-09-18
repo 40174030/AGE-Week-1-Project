@@ -39,10 +39,12 @@ private:
 	//static sf::View resolution;
 	//static Resolution resOptions;
 	//static bool fullscreen;
-	static bool justStarted;
+	static bool paused;
 	static int currentLevel;
 	static sf::Clock spawnClock;
-	static sf::Clock levelProgress;
+	static sf::Clock frameTime;
+	const static float levelDuration;
+	static float timeUntilNextLevel;
 	static GameState gameState;
 	static sf::RenderWindow mainWindow;
 	static Game_ObjectManager game_objectManager;
@@ -52,6 +54,7 @@ private:
 
 	static void GameLoop();
 	static bool IsExiting();
+	static void ResetAllClocks();
 
 	static void ShowTitleScreen();
 	static void ShowMainMenu();

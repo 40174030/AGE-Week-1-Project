@@ -37,7 +37,7 @@ Enemy::~Enemy() {}
 void Enemy::Update(float elapsedTime)
 {
 	GetSprite().move(0, currentVelocity * elapsedTime);
-	if (GetSprite().getPosition().y > Game::screen_Height)
+	if (GetSprite().getPosition().y > (Game::screen_Height - PlayArea::HUD.getGlobalBounds().height))
 	{
 		Vanish();
 	}
@@ -52,6 +52,7 @@ void Enemy::Draw(sf::RenderWindow& window)
 
 void Enemy::Reset()
 {
+	Vanish();
 }
 
 float& Enemy::GetHealth()

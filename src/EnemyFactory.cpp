@@ -10,8 +10,9 @@ void EnemyFactory::SpawnEnemy()
 		firstSpawn = false;
 		spawnClock.restart();
 	}
-	else if (spawnClock.getElapsedTime().asSeconds() < 1.5f)
-		return;
+	
+	if (timeUntilNextSpawn > 0.0f)
+		timeUntilNextSpawn -= spawnClock.getElapsedTime().asSeconds();
 	else
 	{
 		srand(time(NULL));
@@ -22,8 +23,14 @@ void EnemyFactory::SpawnEnemy()
 		case SCOUT: { CreateScout(); break; }
 		case TANK: { CreateTank(); break; }
 		}
-		spawnClock.restart();
+		timeUntilNextSpawn = respawnTime;
 	}
+	spawnClock.restart();
+}
+
+sf::Clock& EnemyFactory::GetSpawnClock()
+{
+	return spawnClock;
 }
 
 void EnemyFactory::CreateStandard()
@@ -56,11 +63,24 @@ void EnemyFactory::SelectSpawnPoint(Enemy& createdEnemy)
 				 (PlayArea::GetRightmostLane() - PlayArea::GetLeftmostLane()) 
 				 + PlayArea::GetLeftmostLane();
 	createdEnemy.SetPosition(PlayArea::lanes[random].getPosition().x + 
-							(PlayArea::lanes[random].getGlobalBounds().width / 2), 0.0f);
+							(PlayArea::lanes[random].getGlobalBounds().width / 2), 
+							-createdEnemy.GetSprite().getLocalBounds().height / 2);
 }
 
+void EnemyFactory::SetFirstSpawn()
+{
+	firstSpawn = true;
+}
+
+void EnemyFactory::SetTimeUntilNextSpawn()
+{
+	timeUntilNextSpawn = respawnTime;
+}
+
+bool EnemyFactory::firstSpawn = true;
 int EnemyFactory::standardsCreated = 0;
 int EnemyFactory::scoutsCreated = 0;
 int EnemyFactory::tanksCreated = 0;
-bool EnemyFactory::firstSpawn = true;
 sf::Clock EnemyFactory::spawnClock;
+const float EnemyFactory::respawnTime = 1.5f;
+float EnemyFactory::timeUntilNextSpawn = respawnTime;

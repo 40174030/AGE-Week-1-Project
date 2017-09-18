@@ -9,8 +9,10 @@ public:
 
 	void Update(float elapsedTime);
 	void Draw(sf::RenderWindow& window);
+	void Reset();
 
 private:
 	float damage;
-	const float velocity = -1500.0f;
+	float velocity;
+	const float originalVelocity = -1500.0f;
 };

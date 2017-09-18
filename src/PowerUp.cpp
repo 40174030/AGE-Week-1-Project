@@ -4,7 +4,6 @@
 
 PowerUp::PowerUp(int enemyType)
 {
-	countup.restart();
 	powerType = enemyType;
 	switch (powerType)
 	{
@@ -12,21 +11,28 @@ PowerUp::PowerUp(int enemyType)
 	case SCOUT: { duration = 5.0f; break; }
 	case TANK: { duration = 7.0f; break; }
 	}
+	powerRemaining = duration;
 }
 
 PowerUp::~PowerUp() {}
 
 void PowerUp::Update(float elapsedTime)
 {
-	if (countup.getElapsedTime().asSeconds() >= duration)
-	{
+	frameTime.restart();
+	if (powerRemaining <= 0.0f)
 		Vanish();
-	}
+	else
+		powerRemaining -= frameTime.getElapsedTime().asSeconds();
 }
 
 void PowerUp::Draw(sf::RenderWindow & window)
 {
 	Game_Object::Draw(window);
+}
+
+void PowerUp::Reset()
+{
+	Vanish();
 }
 
 int PowerUp::GetPowerType()

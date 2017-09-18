@@ -9,10 +9,13 @@ public:
 
 	void Update(float elapsedTime);
 	void Draw(sf::RenderWindow& window);
+	void Reset();
+
 	int GetPowerType();
 
 private:
 	int powerType;
 	float duration;
-	sf::Clock countup;
+	float powerRemaining;
+	sf::Clock frameTime;
 };

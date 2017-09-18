@@ -17,7 +17,6 @@ PlayerAvatar::PlayerAvatar() : health(100.0f), projectilesFired(0), velocity(0.0
 	//}
 
 	GetSprite().setOrigin(GetSprite().getGlobalBounds().width / 2, GetSprite().getGlobalBounds().height / 2);
-	Reset();
 	fireClock.restart();
 }
 
@@ -30,7 +29,9 @@ void PlayerAvatar::Draw(sf::RenderWindow& window)
 
 void PlayerAvatar::Reset()
 {
-	SetPosition((Game::screen_Width / 2), (Game::screen_Height - GetSprite().getGlobalBounds().height / 2));
+	SetPosition((Game::screen_Width / 2), 
+		(Game::screen_Height - GetSprite().getLocalBounds().height / 2) - PlayArea::HUD.getLocalBounds().height + 2.0f);
+	GetSprite().setRotation(0.0f);
 	//if (Game::FullscreenCheck())
 	//{
 	//	SetPosition((Game::fullscreen_Width / 2), (Game::fullscreen_Height - GetSprite().getGlobalBounds().height / 2));
@@ -40,17 +41,6 @@ void PlayerAvatar::Reset()
 	//	SetPosition((Game::windowed_Width / 2), (Game::windowed_Height - GetSprite().getGlobalBounds().height / 2));
 	//}
 }
-
-//std::map<std::string, Game_Object*>::iterator FindPrefix(std::map<std::string, Game_Object*>& objectList, std::string prefix)
-//{
-//	std::map<std::string, Game_Object*>::iterator i = objectList.lower_bound(prefix);
-//	if (i != objectList.end()) {
-//		const std::string& key = i->first;
-//		if (key.compare(0, prefix.size(), prefix) == 0)
-//			return i;
-//	}
-//	return objectList.end();
-//}
 
 void PlayerAvatar::Update(float elapsedTime)
 {

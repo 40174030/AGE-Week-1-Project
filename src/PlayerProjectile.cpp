@@ -11,6 +11,7 @@ PlayerProjectile::PlayerProjectile() : damage(1.0f)
 						  GetSprite().getGlobalBounds().height);
 	SetPosition(Game::GetGOM().GetSingleObject("Player")->GetPosition().x, 
 				Game::GetGOM().GetSingleObject("Player")->GetPosition().y);
+	velocity = originalVelocity;
 }
 
 PlayerProjectile::~PlayerProjectile(){}
@@ -45,4 +46,11 @@ void PlayerProjectile::Update(float elapsedTime)
 		}
 		itr++;
 	}
+
+	velocity = originalVelocity;
+}
+
+void PlayerProjectile::Reset()
+{
+	Vanish();
 }

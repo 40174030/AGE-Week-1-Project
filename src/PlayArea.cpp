@@ -30,9 +30,13 @@ void PlayArea::Setup()
 		lanes[x] = lane;
 		initialX += incrementX;
 	}
+
+	HUD = sf::RectangleShape(sf::Vector2f(Game::screen_Width, 100.0f));
+	HUD.setPosition(0.0f, 980.0f);
+	HUD.setFillColor(sf::Color(0, 0, 0));
 }
 
-void PlayArea::Draw(sf::RenderWindow& window, int level)
+void PlayArea::DrawEnvironment(sf::RenderWindow& window, int level)
 {
 	switch (level)
 	{
@@ -52,9 +56,9 @@ void PlayArea::Draw(sf::RenderWindow& window, int level)
 	}
 }
 
-void PlayArea::Reset()
+void PlayArea::DrawHUD(sf::RenderWindow& window)
 {
-
+	window.draw(HUD);
 }
 
 int PlayArea::GetLeftmostLane()
@@ -68,6 +72,7 @@ int PlayArea::GetRightmostLane()
 }
 
 sf::RectangleShape PlayArea::lanes[10];
+sf::RectangleShape PlayArea::HUD;
 //int PlayArea::level;
 int PlayArea::laneLeftmost;
 int PlayArea::laneRightmost;
