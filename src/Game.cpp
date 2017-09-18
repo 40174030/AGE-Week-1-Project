@@ -235,6 +235,19 @@ void Game::GameLoop()
 	{
 		mainWindow.clear();
 
+		if (justStarted)
+		{
+			justStarted = false;
+			levelProgress.restart();
+		}
+
+		if ((levelProgress.getElapsedTime().asSeconds() >= 10.0f)
+			&& currentLevel < 4)
+		{
+			currentLevel++;
+			levelProgress.restart();
+		}
+
 		PlayArea::Setup();
 		PlayArea::Draw(mainWindow, currentLevel);
 
@@ -272,10 +285,12 @@ void Game::GameLoop()
 	}
 }
 
-//sf::View Game::resolution;
 //bool Game::fullscreen = false;
-int Game::currentLevel = 2;
-Game::GameState Game::gameState = Uninitialized;
+//sf::View Game::resolution;
 //Game::Resolution Game::resOptions = Full_HD;
+bool Game::justStarted = true;
+int Game::currentLevel = 1;
+sf::Clock Game::levelProgress;
+Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;
 Game_ObjectManager Game::game_objectManager;

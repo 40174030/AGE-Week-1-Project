@@ -106,10 +106,13 @@ void PlayerAvatar::Update(float elapsedTime)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
 	{
-		if (pos.x < (boundaryLeft + GetSprite().getGlobalBounds().width / 2))
+		if (pos.x < (boundaryLeft + GetSprite().getLocalBounds().width / 2))
 			velocity = 0.0f;
 		else
+		{
 			velocity = -max_velocity;
+			GetSprite().rotate(-0.25f);
+		}
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
@@ -117,7 +120,10 @@ void PlayerAvatar::Update(float elapsedTime)
 		if (pos.x > (boundaryRight - GetSprite().getLocalBounds().width / 2))
 			velocity = 0.0f;
 		else
+		{
 			velocity = max_velocity;
+			GetSprite().rotate(0.25f);
+		}
 	}
 
 	else

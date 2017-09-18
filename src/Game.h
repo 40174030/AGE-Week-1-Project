@@ -39,8 +39,10 @@ private:
 	//static sf::View resolution;
 	//static Resolution resOptions;
 	//static bool fullscreen;
+	static bool justStarted;
 	static int currentLevel;
 	static sf::Clock spawnClock;
+	static sf::Clock levelProgress;
 	static GameState gameState;
 	static sf::RenderWindow mainWindow;
 	static Game_ObjectManager game_objectManager;
