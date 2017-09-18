@@ -10,6 +10,7 @@ Enemy::Enemy(int createType)
 		Load("res/img/Enemy_Standard.png");
 		type = STANDARD;
 		health = 4.0f;
+		points = 1000;
 		originalVelocity = 200.0f;
 	}
 	else if (createType == SCOUT)
@@ -17,6 +18,7 @@ Enemy::Enemy(int createType)
 		Load("res/img/Enemy_Scout.png");
 		type = SCOUT;
 		health = 1.0f;
+		points = 2000;
 		originalVelocity = 500.0f;
 	}
 	else if (createType == TANK)
@@ -24,6 +26,7 @@ Enemy::Enemy(int createType)
 		Load("res/img/Enemy_Tank.png");
 		type = TANK;
 		health = 10.0f;
+		points = 4000;
 		originalVelocity = 50.0f;
 	}
 
@@ -39,6 +42,7 @@ void Enemy::Update(float elapsedTime)
 	GetSprite().move(0, currentVelocity * elapsedTime);
 	if (GetSprite().getPosition().y > (Game::screen_Height - PlayArea::HUD.getGlobalBounds().height))
 	{
+		Game::GetYourScore() += points;
 		Vanish();
 	}
 

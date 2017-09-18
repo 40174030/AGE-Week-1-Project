@@ -13,21 +13,21 @@ void Game::Start()
 
 	gameState = Game::ShowingTitle;
 
-	//sf::Vector2u full_hd = sf::Vector2u(screen_Width, screen_Height);
-	//mainWindow.setSize(full_hd);
-
 	mainWindow.create(sf::VideoMode(
 		screen_Width,
 		screen_Height,
 		32), "Cutting Corners",
 		sf::Style::Fullscreen);
 
-	mainWindow.setView(sf::View(sf::FloatRect(0.0f, 0.0f, screen_Width, screen_Height)));
+	windowView = sf::View(sf::FloatRect(0.0f, 0.0f, screen_Width, screen_Height));
+	mainWindow.setView(windowView);
 
 	PlayArea::Setup();
 	PlayerAvatar* player = new PlayerAvatar();
 
 	game_objectManager.Add("Player", player);
+
+	ChangeResolution(resOptions);
 
 	while (!IsExiting())
 	{
@@ -75,7 +75,7 @@ int Game::GetCurrentLevel()
 //		fullscreen = true;
 //	}
 //
-//	mainWindow.setView(sf::View(sf::FloatRect(0.0f, 0.0f, screen_Width, screen_Height)));
+//	mainWindow.setViewwindowView)));
 //
 //	switch (gameState)
 //	{
@@ -91,33 +91,33 @@ int Game::GetCurrentLevel()
 //	}
 //}
 
-//void Game::ChangeResolution(Resolution resSelection)
-//{
-//	sf::Vector2u full_hd = sf::Vector2u(screen_Width, screen_Height);
-//	sf::Vector2u hd = sf::Vector2u(1280, 720);
-//	sf::Vector2u sd = sf::Vector2u(720, 480);
-//
-//	switch (resSelection)
-//	{
-//	case Full_HD:
-//	{
-//		mainWindow.setSize(full_hd);
-//		break;
-//	}
-//	case HD:
-//	{
-//		mainWindow.setSize(hd);
-//		break;
-//	}
-//	case SD:
-//	{
-//		mainWindow.setSize(sd);
-//		break;
-//	}
-//	}
-//
-//	mainWindow.setView(sf::View(sf::FloatRect(0.0f, 0.0f, screen_Width, screen_Height)));
-//}
+void Game::ChangeResolution(Resolution resSelection)
+{
+	sf::Vector2u full_hd = sf::Vector2u(screen_Width, screen_Height);
+	sf::Vector2u hd = sf::Vector2u(1280, 720);
+	sf::Vector2u sd = sf::Vector2u(720, 480);
+
+	switch (resSelection)
+	{
+	case Full_HD:
+	{
+		mainWindow.setSize(full_hd);
+		break;
+	}
+	case HD:
+	{
+		mainWindow.setSize(hd);
+		break;
+	}
+	case SD:
+	{
+		mainWindow.setSize(sd);
+		break;
+	}
+	}
+
+	mainWindow.setView(windowView);
+}
 
 void Game::ShowTitleScreen()
 {
@@ -214,6 +214,16 @@ void Game::ShowPauseMenu()
 	}
 }
 
+int& Game::GetYourScore()
+{
+	return yourScore;
+}
+
+int& Game::GetHighScore()
+{
+	return highScore;
+}
+
 bool Game::IsExiting()
 {
 	if (gameState == Game::Exiting)
@@ -261,7 +271,7 @@ void Game::GameLoop()
 		EnemyFactory::SpawnEnemy();
 		game_objectManager.UpdateAll();
 		game_objectManager.DrawAll(mainWindow);
-		PlayArea::DrawHUD(mainWindow);
+		PlayArea::DrawHUD(mainWindow, GetYourScore(), GetHighScore());
 
 		mainWindow.display();
 
@@ -301,11 +311,14 @@ void Game::ResetAllClocks()
 
 //bool Game::fullscreen = false;
 //sf::View Game::resolution;
-//Game::Resolution Game::resOptions = Full_HD;
+Game::Resolution Game::resOptions = SD;
 int Game::currentLevel = 1;
 sf::Clock Game::frameTime;
 const float Game::levelDuration = 20.0f;
 float Game::timeUntilNextLevel = Game::levelDuration; 
+int Game::yourScore;
+int Game::highScore;
 Game::GameState Game::gameState = Uninitialized;
 sf::RenderWindow Game::mainWindow;
+sf::View Game::windowView;
 Game_ObjectManager Game::game_objectManager;

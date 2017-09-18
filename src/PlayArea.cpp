@@ -56,9 +56,30 @@ void PlayArea::DrawEnvironment(sf::RenderWindow& window, int level)
 	}
 }
 
-void PlayArea::DrawHUD(sf::RenderWindow& window)
+void PlayArea::DrawHUD(sf::RenderWindow& window, int yourScore, int highScore)
 {
+	sf::Font font1;
+	font1.loadFromFile("res/Organo.ttf");
+	
+	if (yourScore > highScore)
+		highScore = yourScore;
+
+	sf::Text title_YourScore("Score:\t" + std::to_string(yourScore), font1);
+	sf::Text title_HighScore("Hi-Score:\t" + std::to_string(highScore), font1);
+	
+	title_YourScore.setCharacterSize(30);
+	title_YourScore.setStyle(sf::Text::Bold);
+	title_YourScore.setColor(sf::Color(255, 255, 0));
+	title_YourScore.setPosition(HUD.getPosition() + sf::Vector2f(30.0f, 10.0f));
+
+	title_HighScore.setCharacterSize(30);
+	title_HighScore.setStyle(sf::Text::Bold);
+	title_HighScore.setColor(sf::Color(255, 255, 0));
+	title_HighScore.setPosition(title_YourScore.getPosition() + sf::Vector2f(0.0f, 40.0f));
+
 	window.draw(HUD);
+	window.draw(title_YourScore);
+	window.draw(title_HighScore);
 }
 
 int PlayArea::GetLeftmostLane()

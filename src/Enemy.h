@@ -20,6 +20,7 @@ private:
 	int type;
 	int ID_suffix;
 	float health;
+	int points;
 	float currentVelocity;
 	float originalVelocity;
 };
