@@ -17,6 +17,7 @@ private:
 	void MoveDown();
 
 	bool keyHeld = false;
+	bool stickHeld = false;
 	bool eligibleKeyPressed = false;
 
 	sf::Sprite sprite;

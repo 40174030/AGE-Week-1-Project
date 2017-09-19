@@ -259,6 +259,7 @@ void Game::GameLoop()
 	{
 		game_objectManager.ResetAll();
 		yourScore = 0;
+		player->ResetSHA();
 		ShowMainMenu();
 		EnemyFactory::SetFirstSpawn();
 		EnemyFactory::SetTimeUntilNextSpawn();
@@ -286,7 +287,6 @@ void Game::GameLoop()
 		if (GetYourScore() > GetHighScore())
 			highScore = yourScore;
 
-		PlayerAvatar* player = ReturnPlayer();
 		if (player->GetHealth() <= 0.0f)
 			gameState = Game::ShowingMain;
 
@@ -324,6 +324,7 @@ void Game::GameLoop()
 	}
 	case Game::Paused:
 	{
+		player->ResetSHA();
 		ShowPauseMenu();
 		break;
 	}

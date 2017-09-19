@@ -22,13 +22,23 @@ bool TitleScreen::Show(sf::RenderWindow& window)
 	{
 		while (window.pollEvent(event))
 		{
+			if (sf::Joystick::isConnected(0))
+			{
+				if (sf::Joystick::isButtonPressed(0, 7))
+					return false;
+				else if (sf::Joystick::isButtonPressed(0, 1))
+					return true;
+			}
+			else
+			{
 			if (event.type == sf::Event::EventType::KeyPressed
 				&& event.key.code == sf::Keyboard::Space)
 				return false;
 			else if (event.type == sf::Event::Closed ||
-				(event.type == sf::Event::EventType::KeyPressed 
-				&& event.key.code == sf::Keyboard::Escape))
+				(event.type == sf::Event::EventType::KeyPressed
+					&& event.key.code == sf::Keyboard::Escape))
 				return true;
+			}
 		}
 	}
 }

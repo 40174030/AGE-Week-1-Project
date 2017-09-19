@@ -18,12 +18,14 @@ public:
 	void DeactivateRecovery();
 	void DeactivateSloMo();
 	void DeactivateSuperFire();
+	void ResetSHA();
 
 private:
 	void MoveLeft();
 	void MoveRight();
 	void FireWeapon();
 	
+	bool stillHoldingA;
 	sf::Clock fireClock;
 	float health;
 	float velocity;

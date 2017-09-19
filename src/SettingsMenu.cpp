@@ -39,43 +39,85 @@ SettingsMenu::MenuOptions SettingsMenu::GetMenuResponse(sf::RenderWindow& window
 
 		while (window.pollEvent(menuEvent))
 		{
-			if (menuEvent.type == sf::Event::EventType::KeyPressed
-				&& menuEvent.key.code == sf::Keyboard::Escape)
-				return Back_to_Main;
-
-			if (menuEvent.type == sf::Event::EventType::KeyReleased
-				&& eligibleKeyPressed)
+			if (sf::Joystick::isConnected(0))
 			{
-				eligibleKeyPressed = false;
-				keyHeld = false;
-			}
+				float y = sf::Joystick::getAxisPosition(0, sf::Joystick::PovY);
+				float y2 = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
 
-			if (!keyHeld)
+				if (y > 15)
+					MoveUp();
+				else if (y < -15)
+					MoveDown();
+				else if (y2 > 15)
+				{
+					if (!stickHeld)
+					{
+						MoveDown();
+						stickHeld = true;
+					}
+				}
+				else if (y2 < -15)
+				{
+					if (!stickHeld)
+					{
+						MoveUp();
+						stickHeld = true;
+					}
+				}
+				else if (sf::Joystick::isButtonPressed(0, 0))
+				{
+					if (!buttonHeld)
+						return selection;
+				}
+				else if (sf::Joystick::isButtonPressed(0, 1))
+					return Back_to_Main;
+				else
+				{
+					stickHeld = false;
+					buttonHeld = false;
+				}
+				moveHighlight(window, selection);
+			}
+			else
 			{
 				if (menuEvent.type == sf::Event::EventType::KeyPressed
-					&& menuEvent.key.code == sf::Keyboard::Space)
+					&& menuEvent.key.code == sf::Keyboard::Escape)
+					return Back_to_Main;
+
+				if (menuEvent.type == sf::Event::EventType::KeyReleased
+					&& eligibleKeyPressed)
 				{
-					eligibleKeyPressed = true;
-					keyHeld = true;
-					return selection;
+					eligibleKeyPressed = false;
+					keyHeld = false;
 				}
-				else if (menuEvent.type == sf::Event::EventType::KeyPressed
-					&& menuEvent.key.code == sf::Keyboard::Down)
+
+				if (!keyHeld)
 				{
-					MoveDown();
-					moveHighlight(window, selection);
-				}
-				else if ((menuEvent.type == sf::Event::EventType::KeyPressed
-					&& menuEvent.key.code == sf::Keyboard::Up))
-				{
-					MoveUp();
-					moveHighlight(window, selection);
-				}
-				else if (menuEvent.type == sf::Event::Closed)
-				{
-					eligibleKeyPressed = true;
-					keyHeld = true;
-					return Quit_Game;
+					if (menuEvent.type == sf::Event::EventType::KeyPressed
+						&& menuEvent.key.code == sf::Keyboard::Space)
+					{
+						eligibleKeyPressed = true;
+						keyHeld = true;
+						return selection;
+					}
+					else if (menuEvent.type == sf::Event::EventType::KeyPressed
+						&& menuEvent.key.code == sf::Keyboard::Down)
+					{
+						MoveDown();
+						moveHighlight(window, selection);
+					}
+					else if ((menuEvent.type == sf::Event::EventType::KeyPressed
+						&& menuEvent.key.code == sf::Keyboard::Up))
+					{
+						MoveUp();
+						moveHighlight(window, selection);
+					}
+					else if (menuEvent.type == sf::Event::Closed)
+					{
+						eligibleKeyPressed = true;
+						keyHeld = true;
+						return Quit_Game;
+					}
 				}
 			}
 		}

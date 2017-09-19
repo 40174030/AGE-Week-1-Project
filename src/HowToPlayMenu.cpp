@@ -13,12 +13,6 @@ bool HowToPlayMenu::Show(sf::RenderWindow& window)
 
 	sf::Sprite sprite(image);
 
-	//if (!(Game::FullscreenCheck()))
-	//{
-	//	sf::Vector2f scale = sprite.getScale();
-	//	sprite.scale(scale.x * Game::downscale, scale.y * Game::downscale);
-	//}
-
 	window.draw(sprite);
 	window.display();
 
@@ -28,13 +22,19 @@ bool HowToPlayMenu::Show(sf::RenderWindow& window)
 	{
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::EventType::KeyPressed
-				&& event.key.code == sf::Keyboard::Escape)
+			if (sf::Joystick::isConnected(0))
 			{
-				return false;
+				if (sf::Joystick::isButtonPressed(0, 1))
+					return false;
 			}
-			else if (event.type == sf::Event::Closed)
-				return true;
+			else
+			{
+				if (event.type == sf::Event::EventType::KeyPressed
+					&& event.key.code == sf::Keyboard::Escape)
+					return false;
+				else if (event.type == sf::Event::Closed)
+					return true;
+			}
 		}
 	}
 

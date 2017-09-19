@@ -18,6 +18,8 @@ private:
 	void MoveDown();
 
 	bool keyHeld = false;
+	bool buttonHeld = true;
+	bool stickHeld = false;
 	bool eligibleKeyPressed = false;
 
 	sf::Sprite sprite;

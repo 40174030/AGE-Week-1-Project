@@ -4,9 +4,8 @@
 #include "PowerUp.h"
 #include "Game.h"
 
-PlayerAvatar::PlayerAvatar() : health(100.0f), projectilesFired(0), 
-							   velocity(0.0f), sinceLastFire(0.0f),
-							   active_Recovery(false), active_SloMo(false), active_SuperFire(false)
+PlayerAvatar::PlayerAvatar() : health(100.0f), velocity(0.0f), projectilesFired(0), sinceLastFire(0.0f),
+							   stillHoldingA(true), active_Recovery(false), active_SloMo(false), active_SuperFire(false)
 {
 	Load("res/img/Avatar.png");
 	assert(IsLoaded());
@@ -135,7 +134,14 @@ void PlayerAvatar::Update(float elapsedTime)
 			velocity = 0.0f;
 
 		if (sf::Joystick::isButtonPressed(0, 0))
-			FireWeapon();
+		{
+			if (!stillHoldingA)
+				FireWeapon();
+		}
+		else
+		{
+			stillHoldingA = false;
+		}
 	}
 	else
 	{
@@ -146,7 +152,6 @@ void PlayerAvatar::Update(float elapsedTime)
 		else
 			velocity = 0.0f;
 
-		// FIRING
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			FireWeapon();
 	}
@@ -202,3 +207,7 @@ void PlayerAvatar::FireWeapon()
 }
 
 
+void PlayerAvatar::ResetSHA()
+{
+	stillHoldingA = true;
+}
