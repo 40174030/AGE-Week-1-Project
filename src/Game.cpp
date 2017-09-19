@@ -17,7 +17,7 @@ void Game::Start()
 
 	gameState = Game::ShowingTitle;
 
-	ChangeResolution(resOptions);
+	ChangeResolution(defaultRes);
 
 	windowView = sf::View(sf::FloatRect(0.0f, 0.0f, screen_Width, screen_Height));
 	mainWindow.setView(windowView);
@@ -155,12 +155,41 @@ void Game::ShowHowToPlay()
 void Game::ShowSettingsMenu()
 {
 	SettingsMenu settings;
-	bool quit = settings.Show(mainWindow);
-	if (quit)
-		gameState = Game::Exiting;
-	else
-		gameState = Game::ShowingMain;
+	SettingsMenu::MenuOptions result = settings.Show(mainWindow);
+
 	ResetAllClocks();
+
+	switch (result)
+	{
+	case SettingsMenu::Full_HD:
+	{
+		defaultRes = Full_HD;
+		ChangeResolution(defaultRes);
+		break;
+	}
+	case SettingsMenu::HD:
+	{
+		defaultRes = HD;
+		ChangeResolution(defaultRes);
+		break;
+	}
+	case SettingsMenu::SD:
+	{
+		defaultRes = SD;
+		ChangeResolution(defaultRes);
+		break;
+	}
+	case SettingsMenu::Back_to_Main:
+	{
+		gameState = Game::ShowingMain;
+		break;
+	}
+	case SettingsMenu::Quit_Game:
+	{
+		gameState = Game::Exiting;
+		break;
+	}
+	}
 }
 
 
@@ -267,10 +296,19 @@ void Game::GameLoop()
 
 		if (currentEvent.type == sf::Event::Closed)
 			gameState = Game::Exiting;
-		if (currentEvent.type == sf::Event::KeyPressed)
+
+		if (sf::Joystick::isConnected(0))
 		{
-			if (currentEvent.key.code == sf::Keyboard::Escape)
+			if (sf::Joystick::isButtonPressed(0, 7))
 				gameState = Game::Paused;
+		}
+		else
+		{
+			if (currentEvent.type == sf::Event::KeyPressed)
+			{
+				if (currentEvent.key.code == sf::Keyboard::Escape)
+					gameState = Game::Paused;
+			}
 		}
 		break;
 	}
@@ -308,7 +346,7 @@ PlayerAvatar* Game::ReturnPlayer()
 }
 
 
-Game::Resolution Game::resOptions = HD;
+Game::Resolution Game::defaultRes = HD;
 int Game::currentLevel = 1;
 sf::Clock Game::frameTime;
 const float Game::levelDuration = 20.0f;

@@ -26,7 +26,6 @@ sf::Sound SoundFileCache::GetSound(std::string soundName) const
 
 		sf::Sound sound;
 		sound.setBuffer(*soundBuffer);
-		sound.setVolume(25.0f);
 		return sound;
 	}
 	else

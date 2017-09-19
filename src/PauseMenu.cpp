@@ -23,17 +23,6 @@ PauseMenu::MenuOptions PauseMenu::Show(sf::RenderWindow& window)
 	highlight.setOutlineThickness(10.0f);
 	highlight.setPosition(highlightResume);
 
-	//if (!(Game::FullscreenCheck()))
-	//{
-	//	sf::Vector2f scale = sprite.getScale();
-	//	sf::Vector2f originalSize = highlight.getSize(); 
-	//	
-	//	sprite.scale(scale * Game::downscale);
-	//	highlight.setSize(sf::Vector2f(originalSize * Game::downscale));
-	//	highlight.setPosition(sf::Vector2f(highlightResume * Game::downscale));
-	//	highlight.setOutlineThickness(6.7f);
-	//}
-
 	window.draw(sprite);
 
 	return GetMenuResponse(window);
@@ -46,18 +35,12 @@ void PauseMenu::moveHighlight(sf::RenderWindow& window, PauseMenu::MenuOptions n
 	{
 	case Resume_Game:
 	{
-		//if (Game::FullscreenCheck())
-			highlight.setPosition(highlightResume);
-		//else
-		//	highlight.setPosition(sf::Vector2f(highlightResume* Game::downscale));
+		highlight.setPosition(highlightResume);
 		break;
 	}
 	case Back_to_Main:
 	{
-		//if (Game::FullscreenCheck())
-			highlight.setPosition(highlightBackTo);
-		//else
-		//	highlight.setPosition(sf::Vector2f(highlightBackTo * Game::downscale));
+		highlight.setPosition(highlightBackTo);
 		break;
 	}
 	}
@@ -66,8 +49,6 @@ void PauseMenu::moveHighlight(sf::RenderWindow& window, PauseMenu::MenuOptions n
 PauseMenu::MenuOptions PauseMenu::GetMenuResponse(sf::RenderWindow& window)
 {
 	sf::Event menuEvent;
-	bool keyHeld = false;
-	bool eligibleKeyPressed = false;
 
 	while (true)
 	{
@@ -78,6 +59,17 @@ PauseMenu::MenuOptions PauseMenu::GetMenuResponse(sf::RenderWindow& window)
 
 		while (window.pollEvent(menuEvent))
 		{
+			if (menuEvent.type == sf::Event::EventType::KeyPressed
+				&& menuEvent.key.code == sf::Keyboard::Escape)
+				return Resume_Game;
+
+			if (menuEvent.type == sf::Event::EventType::KeyReleased
+				&& eligibleKeyPressed)
+			{
+				eligibleKeyPressed = false;
+				keyHeld = false;
+			}
+
 			if (!keyHeld)
 			{
 				if (menuEvent.type == sf::Event::EventType::KeyPressed
@@ -90,19 +82,13 @@ PauseMenu::MenuOptions PauseMenu::GetMenuResponse(sf::RenderWindow& window)
 				else if (menuEvent.type == sf::Event::EventType::KeyPressed
 					&& menuEvent.key.code == sf::Keyboard::Down)
 				{
-					eligibleKeyPressed = true;
-					keyHeld = true;
-					selection = static_cast<MenuOptions>((selection + 1) % (Back_to_Main + 1));
+					MoveDown();
 					moveHighlight(window, selection);
 				}
-				else if (menuEvent.type == sf::Event::EventType::KeyPressed
-					&& menuEvent.key.code == sf::Keyboard::Up)
+				else if ((menuEvent.type == sf::Event::EventType::KeyPressed
+					&& menuEvent.key.code == sf::Keyboard::Up))
 				{
-					eligibleKeyPressed = true;
-					keyHeld = true;
-					selection = static_cast<MenuOptions>(selection - 1);
-					if (selection == -1)
-						selection = Back_to_Main;
+					MoveUp();
 					moveHighlight(window, selection);
 				}
 				else if (menuEvent.type == sf::Event::Closed)
@@ -112,12 +98,22 @@ PauseMenu::MenuOptions PauseMenu::GetMenuResponse(sf::RenderWindow& window)
 					return Close_Window;
 				}
 			}
-			else if (menuEvent.type == sf::Event::EventType::KeyReleased
-				&& eligibleKeyPressed)
-			{
-				eligibleKeyPressed = false;
-				keyHeld = false;
-			}
 		}
 	}
+}
+
+void PauseMenu::MoveUp()
+{
+	eligibleKeyPressed = true;
+	keyHeld = true;
+	selection = static_cast<MenuOptions>(selection - 1);
+	if (selection == -1)
+		selection = Back_to_Main;
+}
+
+void PauseMenu::MoveDown()
+{
+	eligibleKeyPressed = true;
+	keyHeld = true;
+	selection = static_cast<MenuOptions>((selection + 1) % (Back_to_Main + 1));
 }

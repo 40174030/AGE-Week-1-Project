@@ -21,6 +21,7 @@ void SFMLSoundProvider::PlaySound(std::string filename)
 		try
 		{
 			sounds[availableChannel] = soundFileCache.GetSound(filename);
+			sounds[availableChannel].setVolume(25.0f);
 			sounds[availableChannel].play();
 		}
 		catch (SoundNotFoundExeception& snfe)

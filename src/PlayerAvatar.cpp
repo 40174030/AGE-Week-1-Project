@@ -196,7 +196,6 @@ void PlayerAvatar::FireWeapon()
 		projectilesFired++;
 		std::string projID = "Projectile" + std::to_string(projectilesFired);
 		Game::GetGOM().Add(projID, proj);
-		std::cout << projID << std::endl;
 		sinceLastFire = 0.0f;
 		fireClock.restart();
 	}

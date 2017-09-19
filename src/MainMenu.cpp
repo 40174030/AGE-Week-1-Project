@@ -2,12 +2,6 @@
 #include "MainMenu.h"
 #include "Game.h"
 
-MainMenu::MainMenu()
-{
-	keyHeld = false;
-	eligibleKeyPressed = false;
-}
-
 MainMenu::MenuOptions MainMenu::Show(sf::RenderWindow& window)
 {
 	selection = Play_Game;
@@ -18,7 +12,6 @@ MainMenu::MenuOptions MainMenu::Show(sf::RenderWindow& window)
 	if (image.loadFromFile("res/img/MainMenu_Temp.png") != true)
 	{
 		throw std::invalid_argument("FAILED TO LOAD: MainMenu");
-		return Quit_Game;
 	}
 	
 	sprite.setTexture(image);
@@ -60,56 +53,31 @@ MainMenu::MenuOptions MainMenu::GetMenuResponse(sf::RenderWindow& window)
 
 			if (!keyHeld)
 			{
-				if (sf::Joystick::isConnected(0))
+				if (menuEvent.type == sf::Event::EventType::KeyPressed
+					&& menuEvent.key.code == sf::Keyboard::Space)
 				{
-					float y = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
-					float y2 = sf::Joystick::getAxisPosition(0, sf::Joystick::PovY);
-
-					if (y > 15)
-						MoveDown();
-					else if (y < -15)
-						MoveUp();
-					else if (y2 < -15)
-						MoveUp();
-					else if (y2 > 15)
-						MoveDown();
+					eligibleKeyPressed = true;
+					keyHeld = true;
+					return selection;
+				}
+				else if (menuEvent.type == sf::Event::EventType::KeyPressed
+					&& menuEvent.key.code == sf::Keyboard::Down)
+				{
+					MoveDown();
 					moveHighlight(window, selection);
 				}
-				else
+				else if ((menuEvent.type == sf::Event::EventType::KeyPressed
+					&& menuEvent.key.code == sf::Keyboard::Up))
 				{
-					if (menuEvent.type == sf::Event::EventType::KeyPressed
-						&& menuEvent.key.code == sf::Keyboard::Space)
-					{
-						eligibleKeyPressed = true;
-						keyHeld = true;
-						return selection;
-					}
-					else if (menuEvent.type == sf::Event::EventType::KeyPressed
-						&& menuEvent.key.code == sf::Keyboard::Down)
-					{
-						eligibleKeyPressed = true;
-						keyHeld = true;
-						selection = static_cast<MenuOptions>((selection + 1) % (Quit_Game + 1));
-						moveHighlight(window, selection);
-					}
-					else if ((menuEvent.type == sf::Event::EventType::KeyPressed
-						&& menuEvent.key.code == sf::Keyboard::Up))
-					{
-						eligibleKeyPressed = true;
-						keyHeld = true;
-						selection = static_cast<MenuOptions>(selection - 1);
-						if (selection == -1)
-							selection = Quit_Game;
-						moveHighlight(window, selection);
-					}
-					else if (menuEvent.type == sf::Event::Closed)
-					{
-						eligibleKeyPressed = true;
-						keyHeld = true;
-						return Quit_Game;
-					}
+					MoveUp();
+					moveHighlight(window, selection);
 				}
-
+				else if (menuEvent.type == sf::Event::Closed)
+				{
+					eligibleKeyPressed = true;
+					keyHeld = true;
+					return Quit_Game;
+				}
 			}
 		}
 	}

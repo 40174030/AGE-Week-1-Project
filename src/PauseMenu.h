@@ -13,6 +13,12 @@ public:
 	MenuOptions Show(sf::RenderWindow& window);
 
 private:
+	void MoveUp();
+	void MoveDown();
+
+	bool keyHeld = false;
+	bool eligibleKeyPressed = false;
+
 	sf::Sprite sprite;
 	sf::RectangleShape highlight;
 

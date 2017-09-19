@@ -13,12 +13,6 @@ bool TitleScreen::Show(sf::RenderWindow& window)
 
 	sf::Sprite sprite(image);
 
-	//if (!(Game::FullscreenCheck()))
-	//{
-	//	sf::Vector2f scale = sprite.getScale();
-	//	sprite.scale(scale.x * Game::downscale, scale.y * Game::downscale);
-	//}
-
 	window.draw(sprite);
 	window.display();
 
@@ -30,13 +24,11 @@ bool TitleScreen::Show(sf::RenderWindow& window)
 		{
 			if (event.type == sf::Event::EventType::KeyPressed
 				&& event.key.code == sf::Keyboard::Space)
-			{
 				return false;
-			}
-			else if (event.type == sf::Event::Closed)
+			else if (event.type == sf::Event::Closed ||
+				(event.type == sf::Event::EventType::KeyPressed 
+				&& event.key.code == sf::Keyboard::Escape))
 				return true;
 		}
 	}
-
-
 }

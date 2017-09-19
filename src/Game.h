@@ -41,8 +41,7 @@ private:
 		SD
 	};
 	
-	static Resolution resOptions;
-	static bool paused;
+	static Resolution defaultRes;
 	static int currentLevel;
 	static sf::Clock spawnClock;
 	static sf::Clock frameTime;
