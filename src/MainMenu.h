@@ -3,6 +3,9 @@
 class MainMenu
 {
 public:
+	MainMenu();
+	~MainMenu();
+
 	enum MenuOptions 
 	{
 		Play_Game,
@@ -14,6 +17,12 @@ public:
 	MenuOptions Show(sf::RenderWindow& window);
 
 private:
+	void MoveUp();
+	void MoveDown();
+
+	bool keyHeld;
+	bool eligibleKeyPressed;
+
 	sf::Sprite sprite;
 	sf::RectangleShape highlight;
 

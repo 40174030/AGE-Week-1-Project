@@ -13,12 +13,6 @@ bool SettingsMenu::Show(sf::RenderWindow& window)
 
 	sf::Sprite sprite(image);
 
-	//if (!(Game::FullscreenCheck()))
-	//{
-	//	sf::Vector2f scale = sprite.getScale();
-	//	sprite.scale(scale.x * Game::downscale, scale.y * Game::downscale);
-	//}
-
 	window.draw(sprite);
 	window.display();
 

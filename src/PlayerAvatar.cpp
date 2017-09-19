@@ -121,9 +121,15 @@ void PlayerAvatar::Update(float elapsedTime)
 	if (sf::Joystick::isConnected(0))
 	{
 		float x = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+		float x2 = sf::Joystick::getAxisPosition(0, sf::Joystick::PovX);
+
 		if (x > 15)
 			MoveRight();
 		else if (x < -15)
+			MoveLeft();
+		else if (x2 > 15)
+			MoveRight();
+		else if (x2 < -15)
 			MoveLeft();
 		else
 			velocity = 0.0f;
