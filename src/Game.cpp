@@ -12,6 +12,9 @@ void Game::Start()
 	if (gameState != Uninitialized)
 		return;
 
+	SFMLSoundProvider soundProvider;
+	ServiceLocator::RegisterServiceLocator(&soundProvider);
+
 	gameState = Game::ShowingTitle;
 
 	ChangeResolution(resOptions);

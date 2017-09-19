@@ -15,4 +15,7 @@ private:
 	float damage;
 	float velocity;
 	const float originalVelocity = -1500.0f;
+
+	sf::SoundBuffer directHit;
+	sf::Sound sound;
 };

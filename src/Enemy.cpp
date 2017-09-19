@@ -47,6 +47,7 @@ void Enemy::Update(float elapsedTime)
 	{
 		PlayerAvatar* player = Game::ReturnPlayer();
 		player->GetHealth() -= damage;
+		ServiceLocator::GetAudio()->PlaySound("res/Pickup_Coin.wav");
 		Vanish();
 	}
 

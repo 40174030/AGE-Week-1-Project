@@ -82,5 +82,5 @@ int EnemyFactory::standardsCreated = 0;
 int EnemyFactory::scoutsCreated = 0;
 int EnemyFactory::tanksCreated = 0;
 sf::Clock EnemyFactory::spawnClock;
-const float EnemyFactory::respawnTime = 1.5f;
+const float EnemyFactory::respawnTime = 1.0f;
 float EnemyFactory::timeUntilNextSpawn = respawnTime;

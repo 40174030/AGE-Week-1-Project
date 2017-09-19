@@ -1,4 +1,6 @@
 #pragma once
+#include "SFMLSoundProvider.h"
+#include "ServiceLocator.h"
 #include "Game_ObjectManager.h"
 #include "EnemyFactory.h"
 #include "PlayArea.h"

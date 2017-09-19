@@ -37,6 +37,7 @@ void PlayerProjectile::Update(float elapsedTime)
 		{
 			if (GetSprite().getGlobalBounds().intersects(itr->second->GetSprite().getGlobalBounds()))
 			{
+				ServiceLocator::GetAudio()->PlaySound("res/Hit_hurt2.wav");
 				Enemy* enemy = static_cast<Enemy*>(Game::GetGOM().GetSingleObject(itr->first));
 				enemy->Damaged(damage);
 				if (enemy->GetHealth() == 0.0f)

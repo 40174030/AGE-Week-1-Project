@@ -69,10 +69,6 @@ void PlayerAvatar::Update(float elapsedTime)
 {
 	sinceLastFire = fireClock.getElapsedTime().asSeconds();
 
-	float boundaryLeft = PlayArea::lanes[PlayArea::GetLeftmostLane()].getGlobalBounds().left;
-	float boundaryRight = PlayArea::lanes[PlayArea::GetRightmostLane()].getPosition().x + 
-						  PlayArea::lanes[PlayArea::GetRightmostLane()].getGlobalBounds().width;
-
 	// CHECK FOR POWERUPS
 	std::map<std::string, Game_Object*>::iterator itr = Game::GetGOM().GetAllObjects().begin();
 	while (itr != Game::GetGOM().GetAllObjects().end())
@@ -122,51 +118,82 @@ void PlayerAvatar::Update(float elapsedTime)
 	}
 	
 	// MOVEMENT
-	sf::Vector2f pos = this->GetPosition();
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
+	if (sf::Joystick::isConnected(0))
 	{
-		if (pos.x < (boundaryLeft + GetSprite().getLocalBounds().width / 2))
-			velocity = 0.0f;
+		float x = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+		if (x > 15)
+			MoveRight();
+		else if (x < -15)
+			MoveLeft();
 		else
-		{
-			velocity = -max_velocity;
-			GetSprite().rotate(-1.0f);
-		}
-	}
-
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
-	{
-		if (pos.x > (boundaryRight - GetSprite().getLocalBounds().width / 2))
 			velocity = 0.0f;
-		else
-		{
-			velocity = max_velocity;
-			GetSprite().rotate(1.0f);
-		}
-	}
 
+		if (sf::Joystick::isButtonPressed(0, 0))
+			FireWeapon();
+	}
 	else
 	{
-		velocity = 0.0f;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
+			MoveLeft();
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
+			MoveRight();
+		else
+			velocity = 0.0f;
+
+		// FIRING
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			FireWeapon();
 	}
 
 	GetSprite().move(velocity * elapsedTime, 0);
-
-	// FIRING
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		if (sinceLastFire > fireRate_Current)
-		{
-			PlayerProjectile* proj = new PlayerProjectile();
-			projectilesFired++;
-			std::string projID = "Projectile" + std::to_string(projectilesFired);
-			Game::GetGOM().Add(projID, proj);
-			std::cout << projID << std::endl;
-			sinceLastFire = 0.0f;
-			fireClock.restart();
-		}
-	}
-
 	fireRate_Current = fireRate_Original;
 }
+
+
+void PlayerAvatar::MoveLeft()
+{
+	sf::Vector2f pos = this->GetPosition();
+	float boundaryLeft = PlayArea::lanes[PlayArea::GetLeftmostLane()].getGlobalBounds().left;
+
+	if (pos.x < (boundaryLeft + GetSprite().getLocalBounds().width / 2))
+		velocity = 0.0f;
+	else
+	{
+		velocity = -max_velocity;
+		GetSprite().rotate(-1.0f);
+	}
+}
+
+
+void PlayerAvatar::MoveRight()
+{
+	sf::Vector2f pos = this->GetPosition();
+	float boundaryRight = PlayArea::lanes[PlayArea::GetRightmostLane()].getPosition().x +
+		PlayArea::lanes[PlayArea::GetRightmostLane()].getGlobalBounds().width;
+
+	if (pos.x > (boundaryRight - GetSprite().getLocalBounds().width / 2))
+		velocity = 0.0f;
+	else
+	{
+		velocity = max_velocity;
+		GetSprite().rotate(1.0f);
+	}
+}
+
+
+void PlayerAvatar::FireWeapon()
+{
+	if (sinceLastFire > fireRate_Current)
+	{
+		PlayerProjectile* proj = new PlayerProjectile();
+		ServiceLocator::GetAudio()->PlaySound("res/Laser_Shoot4.wav");
+		projectilesFired++;
+		std::string projID = "Projectile" + std::to_string(projectilesFired);
+		Game::GetGOM().Add(projID, proj);
+		std::cout << projID << std::endl;
+		sinceLastFire = 0.0f;
+		fireClock.restart();
+	}
+}
+
+

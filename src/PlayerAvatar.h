@@ -20,6 +20,10 @@ public:
 	void DeactivateSuperFire();
 
 private:
+	void MoveLeft();
+	void MoveRight();
+	void FireWeapon();
+	
 	sf::Clock fireClock;
 	float health;
 	float velocity;
